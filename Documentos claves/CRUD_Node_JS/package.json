@@ -1,0 +1,22 @@
+{
+  "name": "crud_node_js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "express": "^5.1.0",
+    "express-handlebars": "^8.0.3",
+    "express-myconnection": "^1.0.4",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.16.0",
+    "nodemon": "^3.1.11"
+  }
+}

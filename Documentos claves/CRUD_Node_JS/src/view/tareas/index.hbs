@@ -1,0 +1,41 @@
+<div class="container mt-5">
+  <h2>Listado de Tareas</h2>
+
+  <table class="table table-striped table-bordered mt-3">
+    <thead class="table-dark">
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>Estado</th>
+        <th>Fecha</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {{#each tareas}}
+        <tr>
+          <td>{{id_tarea}}</td>
+          <td>{{nombre_tarea}}</td>
+          <td>{{descripcion_tarea}}</td>
+          <td>{{estado}}</td>
+          <td>{{fecha}}</td>
+          <td>
+            <form action="/tareas/eliminar" method="POST">
+              <input type="hidden" value="{{id_tarea}}" name="id_tarea">
+              <button class="btn btn-warning btn-sm me-2" type="submit">Eliminar</button>
+            </form>
+            <a href="/tareas/edit/{{id_tarea}}" class="btn btn-primary btn-sm me-2">Actualizar</a>
+          </td>
+        </tr>
+      {{else}}
+        <tr>
+          <td colspan="6" class="text-center">
+            No hay tareas registradas
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
