@@ -12,32 +12,44 @@
 
 <body>
     <!--Bara de navegacion-->
-    <nav class="navbar navbar-expand-lg navbar-secondary">
-        <a class="navbar-brand" href="/">Logo</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="/">BTN GPS</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/">Añadir ruta</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/">Modificar datos de tus rutas</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/">Inicio de sesión</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/">Registro</a>
-                </li>
-            </ul>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+
+            <!-- Logo izquierda -->
+            <a class="navbar-brand fw-bold" href="#">LOGO</a>
+
+            <!-- Botón responsive -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+
+                <!-- Centro -->
+                <ul class="navbar-nav mx-auto text-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">BTN de GPS</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Añadir ruta</a>
+                    </li>
+                </ul>
+
+                <!-- Derecha -->
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="usuario/inicioSesion.hbs">Inicio de sesión</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Registro</a>
+                    </li>
+                </ul>
+
+            </div>
         </div>
     </nav>
+
 
     <!--Doeumento body, sirve para que se pueda ejecutar en el navegador-->
     {{{body}}}
