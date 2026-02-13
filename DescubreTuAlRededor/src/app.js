@@ -42,7 +42,17 @@ app.use('/', tareasRoutes);
 
 // Ruta principal
 app.get('/', (req, res) => {
-    res.render('index');
+    res.render('index', { mostrarNav: true });
+});
+
+//ruta para el login
+app.get('/login', (req, res) => {
+    res.render('vistas/usuario/inicioSesion', { mostrarNav: false });
+});
+
+//ruta para el registro
+app.get('/registro', (req, res) => {
+    res.render('vistas/usuario/registro', { mostrarNav: false });
 });
 
 // Servidor
