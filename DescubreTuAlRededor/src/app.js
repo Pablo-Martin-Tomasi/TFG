@@ -8,12 +8,15 @@ const tareasRoutes = require('./routes/tareas');//CAMBIAR ESTO SI O SI
 
 const app = express();
 
-// Puerto
-app.set('port', 4000);
+//para el css
+app.use(express.static(__dirname + '/public'));
 
 // Middlewares
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+// Puerto
+app.set('port', 4000);
 
 // Vistas
 app.set('views', __dirname + '/view');//ruta del dico durro
@@ -42,17 +45,35 @@ app.use('/', tareasRoutes);
 
 // Ruta principal
 app.get('/', (req, res) => {
-    res.render('index', { mostrarNav: true });
+    res.render('index',{
+        title: 'Inicio',
+        mostrarNav: true });
 });
 
 //ruta para el login
 app.get('/login', (req, res) => {
-    res.render('vistas/usuario/inicioSesion', { mostrarNav: false });
+    res.render('vistas/usuario/inicioSesion', {
+        title: 'Inidio de sesión', 
+        bodyClass: 'loginRegistro', 
+        mostrarNav: false });
 });
 
 //ruta para el registro
 app.get('/registro', (req, res) => {
-    res.render('vistas/usuario/registro', { mostrarNav: false });
+    res.render('vistas/usuario/registro', { 
+        title: 'Resgitro', 
+        bodyClass: 'loginRegistro', 
+        mostrarNav: false 
+    });
+});
+
+//ruta para el perfil del usuario
+app.get('/perfilUsuario', (req, res) => {
+    res.render('vistas/usuario/perfilUsuario', { 
+        title: 'Perfil del usuario', 
+        bodyClass: 'perfilUsuario', 
+        mostrarNav: true 
+    });
 });
 
 // Servidor

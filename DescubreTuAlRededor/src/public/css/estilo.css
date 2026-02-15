@@ -1,12 +1,68 @@
-/*Etilo para el login y el registro*/
-#loginRegistro body {
+/*Etilo para la vista del index*/
+.vistaIndex {
     margin: 0;
     font-family: Arial, sans-serif;
-    background-color: #fdf7f7;
+    background-color: #FFFAF1;
     display: flex;
+    height: 100vh;
+}
+
+/*estilo para la barra de navegacion*/
+.barraNavegacion a {
+    color: #24582A;
+    text-decoration: none;
+}
+
+.barraNavegacion a:hover {
+    text-decoration: underline;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+/*footer*/
+footer {
+    background-color: #343a40;
+    color: #fff;
+    padding: 3rem 0;
+    width: 100vw;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+.textoFooter {
+    text-align: center;
+}
+
+/*.social-icons a {
+    font-size: 1.25rem;
+}*/
+
+/*Etilo para el login y el registro*/
+/* Login y registro */
+.loginRegistro {
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    flex: 1; /* MUY IMPORTANTE */
+    background-color: #fdf7f7;
 }
 
 .login-container {
@@ -16,6 +72,11 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     text-align: center;
+}
+
+.btn-volver {
+    color: rgb(0, 0, 0) !important;
+    text-decoration: unset !important;
 }
 
 .login-container h1 {
@@ -31,7 +92,6 @@
     margin: 10px 0;
     border-radius: 20px;
     border: 1px solid #ccc;
-    outline: none;
 }
 
 .login-container button {
