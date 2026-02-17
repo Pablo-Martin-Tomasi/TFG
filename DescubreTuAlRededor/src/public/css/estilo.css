@@ -17,7 +17,8 @@
     text-decoration: underline;
 }
 
-html, body {
+html,
+body {
     height: 100%;
 }
 
@@ -39,7 +40,8 @@ footer {
     width: 100vw;
 }
 
-html, body {
+html,
+body {
     height: 100%;
 }
 
@@ -61,7 +63,8 @@ body {
 .loginRegistro {
     justify-content: center;
     align-items: center;
-    flex: 1; /* MUY IMPORTANTE */
+    flex: 1;
+    /* MUY IMPORTANTE */
     background-color: #fdf7f7;
 }
 
@@ -77,6 +80,7 @@ body {
 .btn-volver {
     color: rgb(0, 0, 0) !important;
     text-decoration: unset !important;
+    border-radius: 20px !important;
 }
 
 .login-container h1 {
@@ -99,7 +103,7 @@ body {
     color: #000;
     border: none;
     padding: 10px 40px;
-    border-radius: 4px;
+    border-radius: 50px;
     cursor: pointer;
     margin-top: 15px;
 }
@@ -120,4 +124,36 @@ body {
 
 .login-container a:hover {
     text-decoration: underline;
+}
+
+/*estilo css del perfil del usuario*/
+.perfilUsuario {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #FFFAF1;
+    display: flex;
+    height: 100vh;
+}
+
+.cardPerfilUsuario {
+    width: 100%;
+    max-width: 600px;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.fotoDePerfil {
+    width: 100px;
+    height: 100px;
+    border-radius: 30%;
+    border: 3px solid #d0cbcb;
+}
+
+.section-divider {
+    border-top: 1px solid #a09b9b;
+    margin: 20px 0;
+}
+
+.btn-custom {
+    border-radius: 50px;
 }

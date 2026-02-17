@@ -1,3 +1,39 @@
-<div class="perfilUsuario">
-    
+<div class="perfilUsuario d-flex justify-content-center align-items-center">
+    <div class="card shadow-lg cardPerfilUsuario p-4">
+
+        <!-- Imagen y nombre del usuario -->
+        <div class="d-flex align-items-center mb-3">
+            <img src="https://via.placeholder.com/100" alt="Foto de perfil" class="fotoDePerfil me-3">
+            <h3 class="mb-0">NombreUsuario</h3>
+        </div>
+
+        <!-- Datos del usuario -->
+        <div>
+            <p><strong>Email:</strong> usuario@email.com</p>
+            <p><strong>Contraseña:</strong> ********</p>
+            <button class="btn btn-primary btn-sm btn-custom">
+                Modificar datos
+            </button>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- Descripcion del usuario -->
+        <div>
+            <h5>Descripción</h5>
+            <p>
+                Apasionado por la montaña, el senderismo y el desarrollo de aplicaciones.
+                Siempre buscando nuevas rutas y nuevos retos.
+            </p>
+            <a class="btn btn-outline-primary btn-sm btn-custom" role="button">Modificar descripción</a>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- Botones de rutas hechas y por hacer -->
+        <div class="d-grid gap-2">
+            <a class="btn btn-success btn-custom" role="button">Ver rutas hechas</a>
+            <a class="btn btn-warning btn-custom" role="button">Ver rutas por hacer</a>
+        </div>
+    </div>
 </div>

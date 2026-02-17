@@ -2,7 +2,7 @@
 const express = require('express');
 const { engine } = require('express-handlebars');
 const bodyParser = require('body-parser');
-const { Pool } = require('pg'); // ⬅️ PostgreSQL
+const { Pool } = require('pg'); // PostgreSQL
 const tareasRoutes = require('./routes/tareas');//CAMBIAR ESTO SI O SI
 //CAMBIAR ESTO SI O SI lo de arriba
 
@@ -47,15 +47,17 @@ app.use('/', tareasRoutes);
 app.get('/', (req, res) => {
     res.render('index',{
         title: 'Inicio',
+        bodyClass: 'vistaIndex', 
         mostrarNav: true });
 });
 
 //ruta para el login
 app.get('/login', (req, res) => {
     res.render('vistas/usuario/inicioSesion', {
-        title: 'Inidio de sesión', 
+        title: 'Inidio sesión', 
         bodyClass: 'loginRegistro', 
-        mostrarNav: false });
+        mostrarNav: false 
+    });
 });
 
 //ruta para el registro
@@ -68,13 +70,15 @@ app.get('/registro', (req, res) => {
 });
 
 //ruta para el perfil del usuario
-app.get('/perfilUsuario', (req, res) => {
-    res.render('vistas/usuario/perfilUsuario', { 
-        title: 'Perfil del usuario', 
-        bodyClass: 'perfilUsuario', 
+app.get('/modificarDescripcion', (req, res) => {
+    res.render('vistas/usuario/modificarDescripcion', { 
+        title: 'Perfil usuario', 
+        bodyClass: 'formularioDescripcionUsuario', 
         mostrarNav: true 
     });
 });
+
+
 
 // Servidor
 app.listen(app.get('port'), () => {
