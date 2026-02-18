@@ -54,12 +54,7 @@ body {
     text-align: center;
 }
 
-/*.social-icons a {
-    font-size: 1.25rem;
-}*/
-
 /*Etilo para el login y el registro*/
-/* Login y registro */
 .loginRegistro {
     justify-content: center;
     align-items: center;
@@ -132,7 +127,7 @@ body {
     font-family: Arial, sans-serif;
     background-color: #FFFAF1;
     display: flex;
-    height: 100vh;
+    height: 72vh;
 }
 
 .cardPerfilUsuario {
@@ -156,4 +151,52 @@ body {
 
 .btn-custom {
     border-radius: 50px;
+}
+
+/*estilo de la vista de modificar el perfil de usuario*/
+.formularioDescripcionUsuario {
+    font-family: Arial, sans-serif;
+    background-color: #FFFAF1;
+    height: 50vh;
+}
+
+/*estilo para la vista del formulario de modificar los datos del usuario*/
+.modificarDatosUsuario {
+    font-family: Arial, sans-serif;
+    background-color: #FFFAF1;
+    height: 70vh;
+}
+
+.modificarDatosUsuarioFormulario input[type="text"],
+.modificarDatosUsuarioFormulario input[type="email"],
+.modificarDatosUsuarioFormulario input[type="password"] {
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+}
+
+.modificarDatosUsuarioFormulario button {
+    background-color: #91b57d;
+    color: #000;
+    border: none;
+    padding: 10px 40px;
+    border-radius: 50px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+.modificarDatosUsuarioFormulario {
+    background-color: #fff;
+    padding: 40px;
+    width: 350px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: center;
+}
+
+.modificarDatosUsuarioFormulario h1 {
+    margin-bottom: 20px;
+    font-size: 24px;
 }

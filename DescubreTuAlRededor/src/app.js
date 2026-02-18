@@ -70,10 +70,28 @@ app.get('/registro', (req, res) => {
 });
 
 //ruta para el perfil del usuario
+app.get('/perfilUsuario', (req, res) => {
+    res.render('vistas/usuario/perfilUsuario', { 
+        title: 'Perfil usuario', 
+        bodyClass: 'perfilUsuario', 
+        mostrarNav: true 
+    });
+});
+
+//ruta para modificar los datos del usuario
 app.get('/modificarDescripcion', (req, res) => {
     res.render('vistas/usuario/modificarDescripcion', { 
-        title: 'Perfil usuario', 
+        title: 'Modificar perfil usuario', 
         bodyClass: 'formularioDescripcionUsuario', 
+        mostrarNav: true 
+    });
+});
+
+//ruta para modificar los datos del usuario
+app.get('/modificarDatosUsuario', (req, res) => {
+    res.render('vistas/usuario/modificarDatosUsuario', { 
+        title: 'Modificar datos del usuario', 
+        bodyClass: 'modificarDatosUsuario', 
         mostrarNav: true 
     });
 });
