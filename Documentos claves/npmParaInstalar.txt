@@ -1,0 +1,6 @@
+Esto que hay que instalar es para el registro, el login y la encriptación de la contraseña: 
+* npm install express-session
+* npm install bcrypt
+
+Este es para las imágenes que las sacan de la bbdd:
+* npm install multer

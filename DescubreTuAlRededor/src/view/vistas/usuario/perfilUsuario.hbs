@@ -3,35 +3,26 @@
 
         <!-- Imagen y nombre del usuario -->
         <div class="d-flex align-items-center mb-3">
-            <img src="https://via.placeholder.com/100" alt="Foto de perfil" class="fotoDePerfil me-3">
-            <h3 class="mb-0">NombreUsuario</h3>
+            <a href="/" class="btn btn-secondary btn-sm btn-volver-index">
+                Volver
+            </a>
+            <img src="https://via.placeholder.com/100" alt="{{fotoPerfil}}" class="fotoDePerfil me-3">
+            <h3 class="mb-0">{{nombre}}</h3>
         </div>
 
         <!-- Datos del usuario -->
         <div>
-            <p><strong>Email:</strong> usuario@email.com</p>
-            <p><strong>Contraseña:</strong> ********</p>
-            <a href="/modificarDatosUsuario" class="btn btn-primary btn-sm btn-custom" role="button">Modificar datos del usuario</a>
-        </div>
-
-        <div class="section-divider"></div>
-
-        <!-- Descripcion del usuario -->
-        <div>
-            <h5>Descripción</h5>
-            <p>
-                Apasionado por la montaña, el senderismo y el desarrollo de aplicaciones.
-                Siempre buscando nuevas rutas y nuevos retos.
-            </p>
-            <a href="/modificarDescripcion" class="btn btn-outline-primary btn-sm btn-custom" role="button">Modificar descripción</a>
+            <h5><strong>Descripción</strong></h5>
+            <p>{{descripcion}}</p>
+            <a href="/modificarDatosUsuario" class="btn btn-primary btn-sm btn-custom" role="button">Modificar datos</a>
         </div>
 
         <div class="section-divider"></div>
 
         <!-- Botones de rutas hechas y por hacer -->
         <div class="d-grid gap-2">
-            <a class="btn btn-success btn-custom" role="button">Ver rutas hechas</a>
-            <a class="btn btn-warning btn-custom" role="button">Ver rutas por hacer</a>
+            <a href="/verRutasHechas" class="btn btn-success btn-custom" role="button">Ver rutas hechas</a>
+            <a href="/verRutasPorHacer" class="btn btn-warning btn-custom" role="button">Ver rutas por hacer</a>
         </div>
     </div>
 </div>

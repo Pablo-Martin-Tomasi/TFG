@@ -1,7 +1,78 @@
 <div>
-    <h1>TFG</h1>
+    <div class="carousel">
+        <div class="carousel-container">
+            <div class="carousel-item active">
+                <div class="carousel-background" style="background-image: url('img/IMG1.jpg');"></div>
+                <img src="img/IMG1.jpg" class="carousel-foreground">
+            </div>
+            <div class="carousel-item">
+                <div class="carousel-background" style="background-image: url('img/IMG2.jpg');"></div>
+                <img src="img/IMG2.jpg" class="carousel-foreground">
+            </div>
+            <div class="carousel-item">
+                <div class="carousel-background" style="background-image: url('img/IMG3.jpg');"></div>
+                <img src="img/IMG3.jpg" class="carousel-foreground">
+            </div>
+            <div class="carousel-item">
+                <div class="carousel-background" style="background-image: url('img/IMG4.jpg');"></div>
+                <img src="img/IMG4.jpg" class="carousel-foreground">
+            </div>
+            <div class="carousel-item">
+                <div class="carousel-background" style="background-image: url('img/IMG5.jpg');"></div>
+                <img src="img/IMG5.jpg" class="carousel-foreground">
+            </div>
+        </div>
+        <button class="prev" onclick="prevSlide()">&#10094;</button>
+        <button class="next" onclick="nextSlide()">&#10095;</button>
+        <div class="indicators"></div>
+    </div>
 
-    {{!-- enleces a partes de la web, se va a cambiar luego no va a estar en el diseño fina--}}
-    <p>enleces a partes de la web, se va a cambiar luego no va a estar en el diseño fina</p>
-    <a href="/perfilUsuario" class="btn btn-primary" role="button">Ver pefil de usuario</a>
+    <div class="text-center mb-5">
+        <h1>TFG</h1>
+        <h2>Bienvenido {{nombre}}</h2>
+        <p>enleces a partes de la web, se va a cambiar luego no va a estar en el diseño fina</p>
+        <a href="/perfilUsuario" class="btn btn-primary" role="button">Ver pefil de usuario</a>
+    </div>
 </div>
+
+<script>
+    let currentIndex = 0;
+    const slides = document.querySelectorAll('.carousel-item');
+    const indicatorsContainer = document.querySelector('.indicators');
+
+    // Crear indicadores
+    slides.forEach((_, index) => {
+        const dot = document.createElement('div');
+        dot.addEventListener('click', () => goToSlide(index));
+        indicatorsContainer.appendChild(dot);
+    });
+    const indicators = document.querySelectorAll('.indicators div');
+
+    function updateCarousel() {
+        slides.forEach((slide, index) => {
+            slide.classList.toggle('active', index === currentIndex);
+            indicators[index].classList.toggle('active', index === currentIndex);
+        });
+    }
+
+    function nextSlide() {
+        currentIndex = (currentIndex + 1) % slides.length;
+        updateCarousel();
+    }
+
+    function prevSlide() {
+        currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+        updateCarousel();
+    }
+
+    function goToSlide(index) {
+        currentIndex = index;
+        updateCarousel();
+    }
+
+    // Cambio automático cada 5 segundos
+    setInterval(nextSlide, 5000);
+
+    // Inicializar
+    updateCarousel();
+</script>

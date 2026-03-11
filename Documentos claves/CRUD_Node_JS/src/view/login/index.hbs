@@ -1,0 +1,12 @@
+<h1>Login</h1>
+
+<form action="" method="post">
+    <input type="email" name="email" placeholder="ejemplo@gmail.com" required><br>
+    <input type="password" name="contrasenia" placeholder="contraseña" required><br>
+
+    <button type="submit">Iniciar sesion</button>
+
+    {{#if error}}
+    <p>* {{error}}</p>{{!-- !Añadir estilo --}}
+    {{/if}}
+</form>

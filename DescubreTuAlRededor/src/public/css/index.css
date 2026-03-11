@@ -1,0 +1,99 @@
+/*Etilo para la vista del index*/
+.vistaIndex {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #FFFAF1;
+    display: flex;
+    height: 100vh;
+}
+
+/*estilo del carouselle*/
+.carousel {
+    position: relative;
+    width: 100%;
+    max-width: none;
+    overflow: hidden;
+}
+
+.carousel-container {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.carousel-item {
+    width: 100%;
+    height: 400px;
+    position: relative;
+    background-color: #000;
+    display: none;
+    overflow: hidden;
+}
+
+.carousel-item.active {
+    display: block;
+}
+
+.carousel-background {
+    position: absolute;
+    width: 110%;
+    height: 110%;
+    top: -5%;
+    left: -5%;
+    background-size: cover;
+    background-position: center;
+    filter: blur(20px);
+    opacity: 0.6;
+}
+
+.carousel-foreground {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    z-index: 10;
+}
+
+.prev,
+.next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 20px;
+    border-radius: 5px;
+    z-index: 20;
+}
+
+.prev {
+    left: 10px;
+}
+
+.next {
+    right: 10px;
+}
+
+.indicators {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    z-index: 20;
+}
+
+.indicators div {
+    width: 12px;
+    height: 12px;
+    background-color: #bbb;
+    border-radius: 50%;
+    margin: 5px;
+    cursor: pointer;
+}
+
+.indicators .active {
+    background-color: #333;
+}

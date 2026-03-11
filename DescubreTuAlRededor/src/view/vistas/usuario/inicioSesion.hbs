@@ -1,12 +1,18 @@
 <div class="loginRegistro d-flex justify-content-center align-items-center">
     <div class="login-container">
         <h1>Inicio de sesión</h1>
-        <p>¿No eres miembro? <a href="registro">Registro</a></p>
-        <form>
-            <input type="text" placeholder="Nombre de usuario" required><br>
-            <input type="password" placeholder="Contraseña" required><br>
+        <p>¿No eres miembro? <a href="/register">Registro</a></p>
+        <form action="/login" method="post">
+            <input type="email" name="email" placeholder="Correo electronico" required><br>
+            <input type="password" name="contrasena" placeholder="Contraseña" required><br>
             <button type="submit">Iniciar sesión</button>
             <a href="/" class="btn btn-warning btn-volver" role="button">Volver</a>
         </form>
+        <br>
+        {{#if error}}
+        <div class="alert alert-danger">
+            {{error}}
+        </div>
+        {{/if}}
     </div>
 </div>
