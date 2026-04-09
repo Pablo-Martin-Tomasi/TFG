@@ -1,0 +1,46 @@
+<div class="container my-5">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4 text-center">Listado de Rutas</h1>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover mt-3">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col">Nombre de la Ruta</th>
+                            <th scope="col">Dificultad</th>
+                            <th scope="col">KM</th>
+                            <th scope="col">Ubicación</th>
+                            <th scope="col">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each routes}}
+                        <tr>
+                            <td class="align-middle fw-bold">{{nombre_ruta}}</td>
+                            <td class="align-middle">
+                                <span class="badge {{#if (eq dificultad_ruta 'Fácil')}}bg-success{{else if (eq dificultad_ruta 'Normal')}}bg-warning{{else}}bg-danger{{/if}}">
+                                    {{dificultad_ruta}}
+                                </span>
+                            </td>
+                            <td class="align-middle">{{km}} km</td>
+                            <td class="align-middle text-muted">{{direccion}}</td>
+                            <td class="align-middle">
+                                <a href="/detalleRuta/{{id}}" class="btn btn-outline-primary btn-sm">Detalle de la ruta</a>
+                            </td>
+                        </tr>
+                        {{else}}
+                        <tr>
+                            <td colspan="5" class="text-center py-4 text-muted small">
+                                No hay rutas disponibles en este momento.
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+            <div class="text-center mt-4">
+                <a href="/anadirRuta" class="btn btn-success">Añadir Nueva Ruta</a>
+            </div>
+        </div>
+    </div>
+</div>

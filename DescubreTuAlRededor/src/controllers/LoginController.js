@@ -100,10 +100,13 @@ async function storeUser(req, res) {
         // Encriptar contraseña
         const hash = await bcrypt.hash(contrasena, 12);
 
-        // Insertar usuario
+        //poner una foto de perfil automatica a un nuevo usuario
+        const defaultAvatar = '/uploads/AvatarDefault.jpg';
+
+        //insertar usuario
         await req.db.query(
             'INSERT INTO usuario (email, nombre, contrasena, rol, descripcion, foto_perfil) VALUES ($1, $2, $3, $4, $5, $6)',
-            [email, nombre, hash, 'Usuario', 'Hola soy un/a nuev@ usuario', 'Foto de perfil']
+            [email, nombre, hash, 'Usuario', 'Hola soy un/a nuev@ usuario', defaultAvatar]
         );
 
         // Opcional: iniciar sesión automáticamente tras registrarse
@@ -111,6 +114,8 @@ async function storeUser(req, res) {
         req.session.email = email;
         req.session.nombre = nombre;
         req.session.rol = 'Usuario';
+        req.session.descripcion = 'Hola soy un/a nuev@ usuario';
+        req.session.foto_perfil = defaultAvatar;
 
         res.redirect('/');
 
@@ -133,5 +138,5 @@ module.exports = {
     aut,
     register,
     storeUser,
-    logout,
+    logout
 };

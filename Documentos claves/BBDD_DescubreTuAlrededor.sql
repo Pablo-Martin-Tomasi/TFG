@@ -1,5 +1,6 @@
+
+
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
-CREATE EXTENSION IF NOT EXISTS postgis;
 
 -- ENUMS
 CREATE TYPE rol_usuario AS ENUM ('Usuario', 'Admin');
@@ -65,17 +66,6 @@ CREATE TABLE comentario_ruta(
 
     FOREIGN KEY (id_ruta)
         REFERENCES ruta(id_Ruta)
-        ON DELETE CASCADE
-);
-
--- IMAGEN COMENTARIO
-CREATE TABLE imagen_comentario(
-    id_imagen serial PRIMARY KEY,
-    id_comentario int NOT NULL,
-    url_imagen varchar(255),
-
-    FOREIGN KEY (id_comentario)
-        REFERENCES comentario_ruta(id_comentario)
         ON DELETE CASCADE
 );
 
@@ -148,3 +138,5 @@ CREATE TABLE seguidores(
         ON DELETE CASCADE
 );
 
+
+select * from usuario;

@@ -1,0 +1,65 @@
+/*Etilo para el login y el registro*/
+.loginRegistro {
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    background-color: #fdf7f7;
+}
+
+.login-container {
+    background-color: #fff;
+    padding: 40px;
+    width: 350px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: center;
+}
+
+.btn-volver {
+    color: rgb(0, 0, 0) !important;
+    text-decoration: unset !important;
+    border-radius: 20px !important;
+}
+
+.login-container h1 {
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.login-container input[type="text"],
+.login-container input[type="email"],
+.login-container input[type="password"] {
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+}
+
+.login-container button {
+    background-color: #91b57d;
+    color: #000;
+    border: none;
+    padding: 10px 40px;
+    border-radius: 50px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+.login-container button:hover {
+    background-color: #7da36b;
+}
+
+.login-container p {
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.login-container a {
+    color: #91b57d;
+    text-decoration: none;
+}
+
+.login-container a:hover {
+    text-decoration: underline;
+}

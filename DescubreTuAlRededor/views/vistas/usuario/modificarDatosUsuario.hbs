@@ -1,0 +1,12 @@
+<div class="editarPerfilContendor">
+    <div class="modificarDatosUsuarioFormulario">
+        <h1>👤 Mis Datos</h1>
+        <form action="/modificarDatosUsuario" method="POST">
+            <input type="text"  name="nombre" placeholder="Nombre completo" value="{{nombre}}" required><br>
+            <textarea name="descripcion" rows="4" placeholder="Cuéntanos sobre tus rutas favoritas..."
+                required>{{descripcion}}</textarea>
+            <button type="submit">Guardar Cambios</button>
+            <a href="/perfilUsuario" class="btn btn-warning btn-volver" role="button">Volver al Perfil</a>
+        </form>
+    </div>
+</div>

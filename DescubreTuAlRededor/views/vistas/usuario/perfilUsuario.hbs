@@ -1,0 +1,32 @@
+<div class="perfilUsuario d-flex justify-content-center align-items-center">
+    <div class="card shadow-lg cardPerfilUsuario p-4">
+
+        <!-- Imagen y nombre del usuario -->
+        <div class="d-flex align-items-center mb-3">
+            <a href="/" class="btn btn-secondary btn-sm btn-volver-index">
+                Volver
+            </a>
+            <img src="{{fotoPerfil}}" alt="Foto de perfil" class="fotoDePerfil me-3" />
+            <h3 class="mb-0">{{nombre}}</h3>
+        </div>
+
+        <!-- Datos del usuario -->
+        <div>
+            <h5><strong>Descripción</strong></h5>
+            <p>{{descripcion}}</p>
+            <a href="/modificarDatosUsuario" class="btn btn-primary btn-sm btn-custom" role="button">Modificar datos</a>
+            <a href="/modificarContrasenia" class="btn btn-primary btn-sm btn-custom" role="button">Cambiar
+                contraseña</a>
+            <a href="/modificarFotoPerfil" class="btn btn-primary btn-sm btn-custom" role="button">Cambiar
+                foto de perfil</a>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- Botones de rutas hechas y por hacer -->
+        <div class="d-grid gap-2">
+            <a href="/verRutasHechas" class="btn btn-success btn-custom" role="button">Ver rutas hechas</a>
+            <a href="/verRutasPorHacer" class="btn btn-warning btn-custom" role="button">Ver rutas por hacer</a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,39 @@
+/*estilo css del perfil del usuario*/
+.perfilUsuario {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #FFFAF1;
+    display: flex;
+    height: 90vh;
+}
+
+.cardPerfilUsuario {
+    width: 100%;
+    max-width: 600px;
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+}
+
+.fotoDePerfil {
+    width: 100px;
+    height: 100px;
+    border-radius: 30%;
+    border: 3px solid #d0cbcb;
+}
+
+.section-divider {
+    border-top: 1px solid #a09b9b;
+    margin: 20px 0;
+}
+
+.btn-custom {
+    border-radius: 50px;
+}
+
+.btn-volver-index {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    border-radius: 50px;
+}

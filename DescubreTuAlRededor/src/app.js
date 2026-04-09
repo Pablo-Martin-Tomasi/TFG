@@ -1,8 +1,10 @@
 // Importaciones
 const express = require('express');
+const path = require('path');
 const { engine } = require('express-handlebars');
 const bodyParser = require('body-parser');
 const { Pool } = require('pg'); // PostgreSQL
+
 
 //Constantes para todo lo necesario, para el registro y inicio de sesion del usuario
 const session = require('express-session')
@@ -11,22 +13,34 @@ const loginRoutes = require('./routes/login')
 //ruta para modificar los datos del perfil del usuario
 const perfilUsuarioRoutes = require('./routes/perfilUsuario');
 
+//ruta para añadir y todo en las rutas de senderismo
+const rutasRoutes = require('./routes/rutas');
+
+//ruta para la authenticiacion
+const authMiddleware = require('./middleware/auth');
+
+
 const app = express();
 
 //para el css
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(path.join(__dirname, '../public')));
 
 // Middlewares
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+
+
 // Puerto
 app.set('port', 4000);
 
 // Vistas
-app.set('views', __dirname + '/view');//ruta del dico durro
+app.set('views', path.join(__dirname, '../views'));//ruta del dico durro
 app.engine('.hbs', engine({//sirve para poder tener la extension de handlebars
-    extname: '.hbs'
+    extname: '.hbs',
+    helpers: {
+        eq: (a, b) => a === b
+    }
 }));
 app.set('view engine', 'hbs');
 
@@ -36,7 +50,7 @@ const pool = new Pool({
     user: 'postgres',//usuario
     password: 'curso',//contraseña
     port: 5432, //Puerto 
-    database: 'DescubreTuAlrededor'//nombre de la base de datos
+    database: 'DescubreTuAlRededor'//nombre de la base de datos
 });
 
 // Middleware para usar la BD en las rutas
@@ -51,6 +65,10 @@ app.use(session({
     saveUninitialized: true
 }));
 
+// Middlewares
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
 
 // Servidor
 app.listen(app.get('port'), () => {
@@ -60,6 +78,7 @@ app.listen(app.get('port'), () => {
 // Rutas
 app.use('/', loginRoutes);
 app.use('/', perfilUsuarioRoutes);
+app.use('/', rutasRoutes);
 
 // Ruta principal
 app.get('/', (req, res) => {
@@ -72,7 +91,7 @@ app.get('/', (req, res) => {
 });
 
 //ruta para el perfil del usuario
-app.get('/perfilUsuario', (req, res) => {
+app.get('/perfilUsuario', authMiddleware, (req, res) => {
     res.render('vistas/usuario/perfilUsuario', {
         title: 'Perfil usuario',
         bodyClass: 'perfilUsuario',
@@ -86,7 +105,7 @@ app.get('/perfilUsuario', (req, res) => {
 });
 
 //ruta para modificar los datos del usuario
-app.get('/modificarDatosUsuario', (req, res) => {
+app.get('/modificarDatosUsuario', authMiddleware, (req, res) => {
     res.render('vistas/usuario/modificarDatosUsuario', {
         title: 'Modificar datos del usuario',
         bodyClass: 'modificarDatosUsuario',
@@ -100,7 +119,7 @@ app.get('/modificarDatosUsuario', (req, res) => {
 });
 
 //ver rutas hechas 
-app.get('/verRutasHechas', (req, res) => {
+app.get('/verRutasHechas', authMiddleware, (req, res) => {
     res.render('vistas/usuario/verRutasHechas', {
         title: 'Ver rutas hechas',
         bodyClass: 'verRutasHechas',
@@ -110,7 +129,7 @@ app.get('/verRutasHechas', (req, res) => {
 });
 
 //ver rutas por hacer 
-app.get('/verRutasPorHacer', (req, res) => {
+app.get('/verRutasPorHacer', authMiddleware, (req, res) => {
     res.render('vistas/usuario/verRutasPorHacer', {
         title: 'Ver rutas por hacer',
         bodyClass: 'verRutasPorHacer',
@@ -119,17 +138,8 @@ app.get('/verRutasPorHacer', (req, res) => {
     });
 });
 
-//ver rutas 
-app.get('/verRutas', (req, res) => {
-    res.render('vistas/rutas/verRutas', {
-        title: 'Ver rutas',
-        bodyClass: 'verRutas',
-        mostrarNav: true,
-        nombre: req.session.nombre
-    });
-});
 
-//ver rutas 
+//ver detalle de la ruta
 app.get('/detalleRuta', (req, res) => {
     res.render('vistas/rutas/detalleRuta', {
         title: 'Ver rutas',
@@ -140,11 +150,33 @@ app.get('/detalleRuta', (req, res) => {
 });
 
 //formulario añadir nueva ruta 
-app.get('/anadirRuta', (req, res) => {
+app.get('/anadirRuta', authMiddleware, (req, res) => {
     res.render('vistas/rutas/anadirRuta', {
         title: 'Añadir nueva ruta',
         bodyClass: 'anadirRuta',
         mostrarNav: true,
         nombre: req.session.nombre
+    });
+});
+
+//formulario para poder cambiar la contraseña
+app.get('/modificarContrasenia', authMiddleware, (req, res) => {
+    res.render('vistas/usuario/modificarContrasenia', {
+        title: 'Modificar contraseña',
+        bodyClass: 'modificarContrasenia',
+        mostrarNav: true,
+        nombre: req.session.nombre,
+        contrasena: req.session.contrasena
+    });
+});
+
+//ruta para modificar los datos del usuario
+app.get('/modificarFotoPerfil', authMiddleware, (req, res) => {
+    res.render('vistas/usuario/modificarFotoPerfil', {
+        title: 'Cambiar foto de perfil',
+        bodyClass: 'modificarFotoPerfil',
+        mostrarNav: true,
+        nombre: req.session.nombre,
+        fotoPerfil: req.session.foto_perfil
     });
 });

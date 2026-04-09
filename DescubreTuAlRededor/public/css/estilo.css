@@ -1,0 +1,176 @@
+/*estilo para la barra de navegacion*/
+.barraNavegacion a {
+    color: #24582A;
+    text-decoration: none;
+}
+
+.barraNavegacion a:hover {
+    text-decoration: underline;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+
+
+/*estilo de la vista de las rutas hechas y rutas por hacer*/
+.verRutasHechas,
+.verRutasPorHacer {
+    font-family: Arial, sans-serif;
+    background-color: #FFFAF1;
+    height: 70vh;
+}
+
+.verRutasHechas h1,
+.verRutasPorHacer h1 {
+    text-align: center;
+}
+
+
+/* Vista de ver rutas*/
+.custom-card {
+    background-color: #fff;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+}
+
+.custom-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+}
+
+.custom-card .card-body {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.custom-card .card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #24582A;
+    margin-bottom: 0.75rem;
+}
+
+.custom-card .card-text {
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+.card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    height: 100%;
+}
+
+.card-link:hover {
+    text-decoration: none;
+    color: inherit;
+}
+
+/*Detaller rutas*/
+.photo-box {
+    height: 250px;
+    background-color: #d3d3d3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+}
+
+.comment-box {
+    height: 120px;
+    background-color: #cfcfcf;
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    border-radius: 4px;
+}
+
+.side-box {
+    background-color: #d3d3d3;
+    padding: 15px;
+    border-radius: 4px;
+    min-height: 80px;
+}
+
+.description-box {
+    min-height: 300px;
+}
+
+/*estilo para la vista del formulario de añadir nueva ruta*/
+.anadirRuta {
+    font-family: Arial, sans-serif;
+    background-color: #FFFAF1;
+    min-height: 80vh;
+    padding: 60px 0;
+}
+
+.anadirRutaFormulario input[type="text"],
+.anadirRutaFormulario input[type="email"],
+.anadirRutaFormulario input[type="number"],
+.anadirRutaFormulario select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 12px 0;
+    border-radius: 25px;
+    border: 1px solid #ddd;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.anadirRutaFormulario input:focus {
+    outline: none;
+    border-color: #91b57d;
+    box-shadow: 0 0 8px rgba(145, 181, 125, 0.3);
+}
+
+.anadirRutaFormulario button {
+    background-color: #91b57d;
+    color: #000;
+    border: none;
+    padding: 10px 40px;
+    border-radius: 50px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+.anadirRutaFormulario {
+    background-color: #fff;
+    padding: 50px;
+    width: 100%;
+    max-width: 500px; /* Slightly wider for labels */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    text-align: left; /* Left align for labels */
+}
+
+.anadirRutaFormulario label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #444;
+    padding-left: 10px;
+}
+
+.anadirRutaFormulario h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 24px;
+}

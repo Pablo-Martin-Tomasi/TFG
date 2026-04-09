@@ -1,0 +1,48 @@
+<div class="anadirRuta d-flex justify-content-center align-items-center">
+    <div class="anadirRutaFormulario">
+        <h1>Añadir nueva ruta</h1>
+        <form action="/anadirRuta" method="POST" enctype="multipart/form-data">
+            <label for="nombre_ruta">Nombre de la ruta</label>
+            <input type="text" id="nombre_ruta" name="nombre_ruta" placeholder="Nombre de la ruta" required>
+
+            <label for="dificultad_ruta">Dificultad</label>
+            <select id="dificultad_ruta" name="dificultad_ruta" class="form-select" required>
+                <option value="" disabled selected>Selecciona la dificultad</option>
+                <option value="Fácil">Fácil</option>
+                <option value="Normal">Normal</option>
+                <option value="Difícil">Difícil</option>
+            </select>
+
+            <label for="km">Kilómetros</label>
+            <input type="number" id="km" name="km" placeholder="Km de la ruta" required>
+
+            <label for="direccion">Dirección</label>
+            <input type="text" id="direccion" name="direccion" placeholder="Dirección de la ruta" required>
+
+            <label for="mapaDeLaRuta">Mapa de la ruta</label>
+            <input type="file" name="mapaDeLaRuta" required><br>
+
+            <label for="descripcion">Descripción</label>
+            <input type="text" id="descripcion" name="descripcion" placeholder="Descripción" required>
+
+            <label for="desnivel_pos">Desnivel positivo (m)</label>
+            <input type="number" id="desnivel_pos" name="desnivel_pos" placeholder="Desnivel positivo" required>
+
+            <label for="desnivel_neg">Desnivel negativo (m)</label>
+            <input type="number" id="desnivel_neg" name="desnivel_neg" placeholder="Desnivel negativo" required>
+
+            <label for="altura_max">Altura máxima (m)</label>
+            <input type="number" id="altura_max" name="altura_max" placeholder="Altura máxima" required>
+
+            <label for="altura_min">Altura mínima (m)</label>
+            <input type="text" id="altura_min" name="altura_min" placeholder="Altura mínima" required>
+
+            <div class="text-center mt-4">
+                <button type="submit">Añadir ruta</button>
+            </div>
+            <div class="text-center mt-3">
+                <a href="/" class="btn btn-warning btn-volver" role="button">Volver</a>
+            </div>
+        </form>
+    </div>
+</div>
