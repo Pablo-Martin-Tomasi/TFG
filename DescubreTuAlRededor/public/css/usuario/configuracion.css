@@ -1,0 +1,260 @@
+/* =============================================
+   Configuración de usuario - estilo senderismo
+   ============================================= */
+
+.config-wrapper {
+    min-height: 100vh;
+    display: flex;
+    background-color: #f4f7f4;
+}
+
+/* ---- SIDEBAR ---- */
+.config-sidebar {
+    width: 260px;
+    min-height: 100vh;
+    background: linear-gradient(180deg, #1a401f 0%, #24582A 60%, #2f7035 100%);
+    padding: 2rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex-shrink: 0;
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.15);
+}
+
+.config-sidebar-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.config-sidebar-header .sidebar-icon {
+    font-size: 2.5rem;
+    color: #a8d5a2;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.config-sidebar-header h5 {
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin: 0;
+    letter-spacing: 0.03em;
+}
+
+.config-sidebar-header p {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.8rem;
+    margin: 0;
+}
+
+/* ---- MENU ITEMS ---- */
+.config-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.85rem 1.2rem;
+    border-radius: 12px;
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: background 0.25s ease, color 0.25s ease, transform 0.2s ease;
+}
+
+.config-nav-item i {
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+.config-nav-item:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    transform: translateX(4px);
+    text-decoration: none;
+}
+
+.config-nav-item.active {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    font-weight: 600;
+}
+
+/* ---- AREA DE CONTENIDO ---- */
+.config-content {
+    flex: 1;
+    padding: 2.5rem 3rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.config-content-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e0ebe0;
+}
+
+.config-content-header h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #1a401f;
+    margin: 0 0 0.25rem 0;
+}
+
+.config-content-header p {
+    color: #6b8a6b;
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+.config-content-body {
+    background: #fff;
+    border-radius: 16px;
+    padding: 2.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    color: #555;
+    font-size: 0.95rem;
+    line-height: 1.7;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+/* --- TABLET (< 1024px): sidebar más estrecha, sin subtítulo --- */
+@media (max-width: 1024px) {
+    .config-sidebar {
+        width: 200px;
+        padding: 1.5rem 0.75rem;
+    }
+
+    .config-sidebar-header .sidebar-icon {
+        font-size: 2rem;
+    }
+
+    .config-sidebar-header h5 {
+        font-size: 1rem;
+    }
+
+    .config-sidebar-header p {
+        display: none;
+    }
+
+    .config-nav-item {
+        font-size: 0.88rem;
+        padding: 0.75rem 1rem;
+        gap: 0.65rem;
+    }
+
+    .config-content {
+        padding: 2rem 1.75rem;
+    }
+
+    .config-content-header h2 {
+        font-size: 1.5rem;
+    }
+
+    .config-content-body {
+        padding: 2rem;
+    }
+}
+
+/* --- MÓVIL (< 768px): sidebar colapsada arriba, iconos + label corto --- */
+@media (max-width: 768px) {
+    .config-wrapper {
+        flex-direction: column;
+    }
+
+    .config-sidebar {
+        width: 100%;
+        min-height: auto;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
+        padding: 0.75rem 1rem;
+        gap: 0.25rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    .config-sidebar-header {
+        display: none;
+    }
+
+    /* En móvil los items muestran solo icono + label pequeño en columna */
+    .config-nav-item {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.6rem 0.75rem;
+        border-radius: 10px;
+        font-size: 0.7rem;
+        text-align: center;
+        flex: 1;
+    }
+
+    .config-nav-item i {
+        font-size: 1.4rem;
+    }
+
+    /* Mostrar texto pero recortado */
+    .config-nav-item span {
+        display: block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 70px;
+    }
+
+    /* Quitar el hover de deslizamiento lateral (no tiene sentido en vertical) */
+    .config-nav-item:hover {
+        transform: translateY(-2px);
+    }
+
+    /* El botón "Volver" al final -> lo ponemos a la derecha en móvil */
+    .config-nav-item.mt-auto {
+        margin-top: 0;
+    }
+
+    .config-content {
+        padding: 1.25rem 1rem;
+    }
+
+    .config-content-header h2 {
+        font-size: 1.3rem;
+    }
+
+    .config-content-header p {
+        font-size: 0.85rem;
+    }
+
+    .config-content-body {
+        padding: 1.5rem 1.25rem;
+        border-radius: 12px;
+    }
+}
+
+/* --- MUY PEQUEÑO (< 480px): labels ocultos, solo iconos --- */
+@media (max-width: 480px) {
+    .config-nav-item span {
+        display: none;
+    }
+
+    .config-nav-item {
+        padding: 0.65rem;
+        border-radius: 50%;
+        flex: 0 0 auto;
+    }
+
+    .config-nav-item i {
+        font-size: 1.3rem;
+    }
+
+    .config-content {
+        padding: 1rem;
+    }
+
+    .config-content-body {
+        padding: 1.25rem 1rem;
+    }
+}

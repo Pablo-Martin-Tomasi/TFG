@@ -1,16 +1,29 @@
 /*estilo para la barra de navegacion*/
+.barraNavegacion {
+    margin: 0;
+    padding: 0;
+}
+
+.barraNavegacion nav {
+    margin-top: 0;
+}
+
 .barraNavegacion a {
     color: #24582A;
     text-decoration: none;
+    transition: color 0.3s ease;
 }
 
 .barraNavegacion a:hover {
     text-decoration: underline;
+    color: #1a401f;
 }
 
 html,
 body {
     height: 100%;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 body {
@@ -30,7 +43,7 @@ main {
 .verRutasPorHacer {
     font-family: Arial, sans-serif;
     background-color: #FFFAF1;
-    height: 70vh;
+    min-height: 70vh;
 }
 
 .verRutasHechas h1,
@@ -86,20 +99,27 @@ main {
 
 /*Detaller rutas*/
 .photo-box {
-    height: 250px;
+    height: 450px;
     background-color: #d3d3d3;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .photo-box {
+        height: 300px;
+    }
 }
 
 .comment-box {
-    height: 120px;
+    min-height: 120px;
+    height: auto;
     background-color: #cfcfcf;
     display: flex;
     align-items: center;
-    padding-left: 20px;
+    padding: 15px 20px;
     border-radius: 4px;
 }
 
@@ -116,8 +136,8 @@ main {
 
 /*estilo para la vista del formulario de añadir nueva ruta*/
 .anadirRuta {
-    font-family: Arial, sans-serif;
-    background-color: #FFFAF1;
+    font-family: 'Inter', Arial, sans-serif;
+    background-color: #f4f7f6;
     min-height: 80vh;
     padding: 60px 0;
 }
@@ -125,52 +145,127 @@ main {
 .anadirRutaFormulario input[type="text"],
 .anadirRutaFormulario input[type="email"],
 .anadirRutaFormulario input[type="number"],
-.anadirRutaFormulario select {
+.anadirRutaFormulario select,
+.anadirRutaFormulario textarea {
     width: 100%;
-    padding: 12px 20px;
-    margin: 12px 0;
-    border-radius: 25px;
-    border: 1px solid #ddd;
-    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+    padding: 14px 20px;
+    margin: 8px 0 16px 0;
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+    background-color: #fcfcfc;
+    transition: all 0.3s ease;
+    font-size: 1rem;
 }
 
-.anadirRutaFormulario input:focus {
+.anadirRutaFormulario input[type="file"] {
+    width: 100%;
+    padding: 10px 20px;
+    margin: 8px 0 16px 0;
+    border-radius: 12px;
+    border: 1px dashed #91b57d;
+    background-color: #f4f8f4;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+.anadirRutaFormulario input[type="file"]:hover {
+    background-color: #eaf1e8;
+}
+
+.anadirRutaFormulario input:focus,
+.anadirRutaFormulario select:focus,
+.anadirRutaFormulario textarea:focus {
     outline: none;
     border-color: #91b57d;
-    box-shadow: 0 0 8px rgba(145, 181, 125, 0.3);
+    background-color: #fff;
+    box-shadow: 0 0 0 4px rgba(145, 181, 125, 0.2);
 }
 
 .anadirRutaFormulario button {
-    background-color: #91b57d;
-    color: #000;
+    background: linear-gradient(135deg, #91b57d, #6b8f58);
+    color: #fff;
+    font-weight: 600;
     border: none;
-    padding: 10px 40px;
+    padding: 12px 35px;
     border-radius: 50px;
     cursor: pointer;
     margin-top: 15px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    font-size: 1.05rem;
+    box-shadow: 0 4px 15px rgba(145, 181, 125, 0.4);
+}
+
+.anadirRutaFormulario button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(145, 181, 125, 0.6);
+}
+
+.anadirRutaFormulario a.btn-volver {
+    border-radius: 50px;
+    padding: 12px 35px;
+    font-weight: 600;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.anadirRutaFormulario a.btn-volver:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 193, 7, 0.4);
 }
 
 .anadirRutaFormulario {
     background-color: #fff;
-    padding: 50px;
-    width: 100%;
-    max-width: 500px; /* Slightly wider for labels */
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 40px 50px;
+    width: 95%;
+    max-width: 600px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
     border-radius: 20px;
-    text-align: left; /* Left align for labels */
+    text-align: left;
+}
+
+@media (max-width: 576px) {
+    .anadirRutaFormulario {
+        padding: 30px 20px;
+    }
 }
 
 .anadirRutaFormulario label {
     display: block;
-    margin-top: 15px;
-    margin-bottom: 5px;
-    font-weight: bold;
-    color: #444;
-    padding-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 4px;
+    font-weight: 600;
+    color: #2c3e2d;
+    font-size: 0.95rem;
+    padding-left: 5px;
 }
 
 .anadirRutaFormulario h1 {
     text-align: center;
-    margin-bottom: 30px;
-    font-size: 24px;
+    margin-bottom: 35px;
+    font-size: 28px;
+    color: #1a401f;
+    font-weight: 700;
 }
+
+.anadirRutaFormulario textarea {
+  height: 120px;
+  resize: vertical;
+}
+
+/* Galería de imágenes en detalle de ruta */
+.photo-box-gallery {
+    height: 200px;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.photo-box-gallery:hover {
+    transform: scale(1.02);
+}
+
+.object-fit-cover {
+    object-fit: cover;
+}

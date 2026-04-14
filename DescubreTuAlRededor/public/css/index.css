@@ -4,7 +4,8 @@
     font-family: Arial, sans-serif;
     background-color: #FFFAF1;
     display: flex;
-    height: 100vh;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 /*estilo del carouselle*/
@@ -27,6 +28,12 @@
     background-color: #000;
     display: none;
     overflow: hidden;
+}
+
+@media (max-width: 768px) {
+    .carousel-item {
+        height: 250px;
+    }
 }
 
 .carousel-item.active {
@@ -66,6 +73,13 @@
     font-size: 20px;
     border-radius: 5px;
     z-index: 20;
+}
+
+@media (max-width: 480px) {
+    .prev, .next {
+        padding: 8px 12px;
+        font-size: 16px;
+    }
 }
 
 .prev {

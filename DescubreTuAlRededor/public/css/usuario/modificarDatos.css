@@ -23,11 +23,18 @@ body.modificarFotoPerfil {
     background-color: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(5px);
     padding: 40px;
-    width: 400px;
+    width: 95%;
+    max-width: 400px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     border-radius: 15px;
     border: 1px solid rgba(46, 125, 50, 0.3);
     text-align: center;
+}
+
+@media (max-width: 480px) {
+    .modificarDatosUsuarioFormulario {
+        padding: 30px 20px;
+    }
 }
 
 .modificarDatosUsuarioFormulario h1 {
@@ -51,6 +58,7 @@ body.modificarFotoPerfil {
     border: 2px solid #E0E0E0;
     font-family: 'Inter', sans-serif;
     font-size: 14px;
+    box-sizing: border-box;
     transition: border-color 0.3s, box-shadow 0.3s;
 }
 

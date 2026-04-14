@@ -18,6 +18,7 @@ const rutasRoutes = require('./routes/rutas');
 
 //ruta para la authenticiacion
 const authMiddleware = require('./middleware/auth');
+const { title } = require('process');
 
 
 const app = express();
@@ -180,3 +181,43 @@ app.get('/modificarFotoPerfil', authMiddleware, (req, res) => {
         fotoPerfil: req.session.foto_perfil
     });
 });
+
+//ruta para poder ver misRutas
+app.get('/misRutas', authMiddleware, (req, res) => {
+    res.render('vistas/rutas/misRutas', {
+        title: 'Mis rutas',
+        bodyClass: 'misRutas',
+        mostrarNav: true,
+        nombre: req.session.nombre
+    });
+});
+
+//ruta para poder ver el detalle de una ruta que has agregado como usuario
+app.get('/miRuta', authMiddleware, (req, res) => {
+    res.render('vistas/rutas/miRuta', {
+        title: ruta.nombre_ruta,
+        bodyClass: 'verRutas',
+        mostrarNav: true,
+        nombre: req.session.nombre
+    });
+});
+
+//vista de configuracion
+app.get('/configuracion', authMiddleware, (req, res) => {
+    res.render('vistas/usuario/configuracion', {
+        title: 'Configuracion',
+        bodyClass: 'opciones',
+        mostrarNav: true,
+        nombre: req.session.nombre
+    });
+});
+
+//vista de anadir imagenes
+app.get('/anadirImagenRuta', authMiddleware, (req, res) => {
+    res.render('vistas/rutas/anadirImagenRuta', {
+        title: 'Añadir imagenes a la ruta',
+        bodyClass: 'imagenRuta',
+        mostrarNav: true,
+        nombre: req.session.nombre
+    })
+})

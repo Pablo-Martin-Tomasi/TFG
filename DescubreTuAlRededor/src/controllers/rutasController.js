@@ -2,15 +2,15 @@ const fs = require('fs');
 const path = require('path');
 
 async function anadirRuta(req, res) {
-    const { 
-        nombre_ruta, 
-        dificultad_ruta, 
-        km, 
-        direccion,  
-        descripcion, 
-        desnivel_pos, 
-        desnivel_neg, 
-        altura_max, 
+    const {
+        nombre_ruta,
+        dificultad_ruta,
+        km,
+        direccion,
+        descripcion,
+        desnivel_pos,
+        desnivel_neg,
+        altura_max,
         altura_min
     } = req.body;
 
@@ -29,6 +29,26 @@ async function anadirRuta(req, res) {
                 mostrarNav: true,
                 nombre: req.session.nombre,
                 error: 'Ya existe una ruta con ese nombre'
+            });
+        }
+
+        if (altura_min > altura_max) {
+            return res.render('vistas/rutas/anadirRuta', {
+                title: 'Añadir nueva ruta',
+                bodyClass: 'anadirRuta',
+                mostrarNav: true,
+                nombre: req.session.nombre,
+                error: 'La altura minima no puede superior a la altura maxima'
+            });
+        }
+
+        if (desnivel_neg < 0 || desnivel_neg < 0) {
+            return res.render('vistas/rutas/anadirRuta', {
+                title: 'Añadir nueva ruta',
+                bodyClass: 'anadirRuta',
+                mostrarNav: true,
+                nombre: req.session.nombre,
+                error: 'Los desniveles no pueden ser negativos'
             });
         }
 
@@ -85,13 +105,85 @@ async function verRutas(req, res) {
     }
 }
 
-async function  modificarRuta(req, res) {
-    
+async function modificarRuta(req, res) {
+
 }
 
-async function detalleRuta(req, res){
-    try{
-        const { id } = req.params;
+async function detalleRuta(req, res) {
+    try {
+        const id = parseInt(req.params.id);
+
+        if (isNaN(id)) {
+            return res.send("ID inválido");
+        }
+
+        // Obtener datos de la ruta
+        const resultadoRuta = await req.db.query(
+            'SELECT * FROM ruta WHERE id_ruta = $1',
+            [id]
+        );
+
+        if (resultadoRuta.rows.length === 0) {
+            return res.status(404).send("Ruta no encontrada");
+        }
+
+        const ruta = resultadoRuta.rows[0];
+
+        // Obtener imágenes adicionales de la ruta
+        const resultadoImagenes = await req.db.query(
+            'SELECT * FROM imagenes_ruta WHERE id_ruta = $1',
+            [id]
+        );
+
+        const imagenes = resultadoImagenes.rows;
+
+        res.render('vistas/rutas/detalleRuta', {
+            title: ruta.nombre_ruta,
+            bodyClass: 'verRutas',
+            mostrarNav: true,
+            nombre: req.session.nombre,
+            ruta: ruta,
+            imagenes: imagenes
+        });
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).send('Error al obtener las rutas: ' + error.message);
+    }
+}
+
+async function misRutas(req, res) {
+    try {
+        const email = req.session.email;
+
+        const resultado = await req.db.query(
+            'select * from ruta where email = $1',
+            [email]
+        );
+
+        const rutasUsuario = resultado.rows;
+
+        res.render('vistas/rutas/misRutas', {
+            title: 'Mis rutas',
+            bodyClass: 'misRutas',
+            mostrarNav: true,
+            nombre: req.session.nombre,
+            rutasUsuario: rutasUsuario
+        });
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).send('Error al obtener las rutas: ' + error.message);
+    }
+}
+
+async function miRuta(req, res) {
+    try {
+        const id = parseInt(req.params.id);
+
+        if (isNaN(id)) {
+            return res.send("ID inválido");
+        }
 
         const resultado = await req.db.query(
             'SELECT * FROM ruta WHERE id_ruta = $1',
@@ -100,7 +192,13 @@ async function detalleRuta(req, res){
 
         const ruta = resultado.rows[0];
 
-        res.render('/detalleRuta');
+        res.render('vistas/rutas/miRuta', {
+            title: ruta.nombre_ruta,
+            bodyClass: 'verRutas',
+            mostrarNav: true,
+            nombre: req.session.nombre,
+            ruta: ruta
+        });
     }
     catch (error) {
         console.error(error);
@@ -112,5 +210,7 @@ module.exports = {
     anadirRuta,
     verRutas,
     modificarRuta,
-    detalleRuta
+    detalleRuta,
+    misRutas,
+    miRuta
 };

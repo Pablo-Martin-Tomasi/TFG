@@ -1,7 +1,5 @@
 <div class="container-fluid mt-4">
 
-    <a href="/ruta/{{ruta.id_ruta}}/anadirImagenRuta" class="btn btn-success btn-custom" role="button">Añadir imagen</a>
-
     <!-- Título -->
     <div class="row mb-4">
         <div class="col text-center">
@@ -20,20 +18,9 @@
                     style="width: 100%; height: 100%; object-fit: contain; display: block;">
             </div>
 
-            <!-- Galería de imágenes adicionales -->
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mb-4">
-                {{#each imagenes}}
-                <div class="col">
-                    <div class="photo-box-gallery">
-                        <img src="{{this.imagen_ruta}}" class="img-fluid rounded shadow-sm w-100 h-100 object-fit-cover" 
-                             alt="Imagen de la ruta">
-                    </div>
-                </div>
-                {{else}}
-                <div class="col-12">
-                    <p class="text-muted italic">No hay fotos adicionales de esta ruta aún. ¡Sé el primero en añadir una!</p>
-                </div>
-                {{/each}}
+            <!-- Segunda foto -->
+            <div class="photo-box mb-4">
+                Fotos de la ruta, pero del entorno o del paiseje
             </div>
 
             <!-- Comentarios -->
@@ -67,3 +54,4 @@
         </div>
     </div>
 </div>
+<br>
