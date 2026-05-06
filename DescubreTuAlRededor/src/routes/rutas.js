@@ -19,11 +19,13 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 
+router.get('/', rutasController.verRutasIndex);
 router.get('/verRutas', rutasController.verRutas);
-router.post('/anadirRuta', authMiddleware, upload.single('mapaDeLaRuta'), rutasController.anadirRuta);
+router.post('/anadirRuta', authMiddleware, rutasController.anadirRuta);
 router.get('/detalleRuta/:id', authMiddleware, rutasController.detalleRuta);
 router.get('/misRutas', authMiddleware, rutasController.misRutas);
 router.get('/miRuta/:id', authMiddleware, rutasController.miRuta);
+router.post('/editarRuta/:id', authMiddleware, rutasController.modificarRuta)
 
 
 module.exports = router;

@@ -1,0 +1,20 @@
+.upload-card {
+    background: linear-gradient(135deg, #f8fff8, #e6f5e6);
+}
+
+.upload-box {
+    border: 2px dashed #28a745;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: block;
+}
+
+.upload-box:hover {
+    background-color: #f1fff1;
+    transform: scale(1.02);
+}
+
+.upload-box input {
+    display: none;
+}

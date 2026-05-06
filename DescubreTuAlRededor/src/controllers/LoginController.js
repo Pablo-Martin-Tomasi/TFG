@@ -6,7 +6,7 @@ function login(req, res) {
     }
 
     res.render('vistas/usuario/inicioSesion', {
-        title: 'Inicio sesión',
+        title: 'Inicio sesión | Descubre tu al rededor',
         bodyClass: 'loginRegistro',
         mostrarNav: false
     });
@@ -24,7 +24,7 @@ async function aut(req, res) {
 
         if (result.rows.length === 0) {
             return res.render('vistas/usuario/inicioSesion', {
-                title: 'Inicio sesión',
+                title: 'Inicio sesión | Descubre tu al rededor',
                 bodyClass: 'loginRegistro',
                 mostrarNav: false,
                 error: 'No existe un usuario con ese email'
@@ -42,7 +42,7 @@ async function aut(req, res) {
 
         if (!passwordCorrecta) {
             return res.render('vistas/usuario/inicioSesion', {
-                title: 'Inicio sesión',
+                title: 'Inicio sesión | Descubre tu al rededor',
                 bodyClass: 'loginRegistro',
                 mostrarNav: false,
                 error: 'Contraseña incorrecta'
@@ -72,7 +72,7 @@ function register(req, res) {
     }
 
     res.render('vistas/usuario/registro', {
-        title: 'Registro',
+        title: 'Registro | Descubre tu al rededor',
         bodyClass: 'loginRegistro',
         mostrarNav: false
     });
@@ -90,7 +90,7 @@ async function storeUser(req, res) {
 
         if (existe.rows.length > 0) {
             return res.render('vistas/usuario/registro', {
-                title: 'Registro',
+                title: 'Registro | Descubre tu al rededor',
                 bodyClass: 'loginRegistro',
                 mostrarNav: false,
                 error: 'Ya existe un usuario con ese email'

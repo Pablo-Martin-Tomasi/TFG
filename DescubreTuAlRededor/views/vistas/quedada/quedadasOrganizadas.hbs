@@ -1,0 +1,42 @@
+<div class="container my-5">
+    <div class="d-flex justify-content-start">
+        <a href="javascript:history.back()" class="btn-volver-perfil">
+            <i class="bi bi-arrow-left-circle-fill"></i> Volver
+        </a>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4 text-center">Quedadas organizadas</h1>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover mt-3">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col">Nombre de la Ruta</th>
+                            <th scope="col">Dia</th>
+                            <th scope="col">Direcion</th>
+                            <th scope="col">Detalle</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each quedadas}}
+                        <tr>
+                            <td class="align-middle fw-bold">{{nombre_ruta}}</td>
+                            <td class="align-middle">{{formatDate dia}}</td>
+                            <td class="align-middle">{{direcion}}</td>
+                            <td class="align-middle">
+                                <a href="/detalleQuedada/{{id_quedada}}" class="btn btn-outline-primary btn-sm">Detalle de la quedada</a>
+                            </td>
+                        </tr>
+                        {{else}}
+                        <tr>
+                            <td colspan="5" class="text-center py-4 text-muted small">
+                                No hay quedadas disponibles por el momento.
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

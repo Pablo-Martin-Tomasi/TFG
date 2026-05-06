@@ -1,0 +1,190 @@
+<div class="detalle-quedada-body pb-5">
+
+    <!-- Hero Section -->
+    <section class="hero-quedada text-center">
+        <div class="container">
+            <p class="subtitle mb-2">
+                <i class="bi bi-signpost-2-fill me-2"></i>{{quedada.nombre_ruta}}
+            </p>
+            <h1>Detalle de la Quedada</h1>
+        </div>
+    </section>
+
+    <div class="container mt-5">
+        <div class="row g-4">
+
+            <!-- Columna Principal -->
+            <div class="col-lg-8">
+
+                <!-- Descripción -->
+                <div class="main-content-card">
+                    <h3 class="section-title">
+                        <i class="bi bi-chat-text-fill"></i> Descripción
+                    </h3>
+                    <p class="description-text">{{quedada.descripcion}}</p>
+                </div>
+
+                <!-- Punto de encuentro -->
+                <div class="main-content-card">
+                    <h3 class="section-title">
+                        <i class="bi bi-geo-alt-fill"></i> Punto de Encuentro
+                    </h3>
+                    <p class="description-text">
+                        <i class="bi bi-pin-map-fill text-success me-2"></i>{{quedada.direcion}}
+                    </p>
+                </div>
+
+                <!-- Mapa de la ruta -->
+                <div class="main-content-card p-0">
+                    <div class="p-4 pb-0">
+                        <h3 class="section-title">
+                            <i class="bi bi-map-fill"></i> Mapa de la Ruta
+                        </h3>
+                    </div>
+                    <div class="map-container">
+                        <div class="card-img-container">
+                            <div id="map-{{quedada.id_ruta}}" class="map-card"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+
+                <!-- Datos clave -->
+                <div class="sidebar-card">
+                    <h5><i class="bi bi-info-circle-fill"></i> Información</h5>
+
+                    <div class="sidebar-info-item">
+                        <i class="bi bi-calendar-event-fill"></i>
+                        <div>
+                            <span class="label">Fecha</span>
+                            <span class="value">{{formatDate quedada.dia}}</span>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-info-item">
+                        <i class="bi bi-clock-fill"></i>
+                        <div>
+                            <span class="label">Hora</span>
+                            <span class="value">{{quedada.hora}}</span>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-info-item">
+                        <i class="bi bi-people-fill"></i>
+                        <div>
+                            <span class="label">Plazas máximas</span>
+                            <span class="value">{{quedada.max_participantes}} participantes</span>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-info-item">
+                        <i class="bi bi-person-fill"></i>
+                        <div>
+                            <span class="label">Organizada por</span>
+                            <span class="value">{{quedada.nombre}}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ruta vinculada -->
+                <div class="sidebar-card">
+                    <h5><i class="bi bi-signpost-split-fill"></i> Ruta</h5>
+                    <div class="sidebar-info-item">
+                        <i class="bi bi-map"></i>
+                        <div>
+                            <span class="label">Nombre de la ruta</span>
+                            <span class="value">{{quedada.nombre_ruta}}</span>
+                        </div>
+                    </div>
+                    <a href="/detalleRuta/{{quedada.id_ruta}}" class="btn btn-join mt-2">
+                        <i class="bi bi-binoculars-fill me-2"></i>Ver Ruta Completa
+                    </a>
+                </div>
+
+                {{!-- Solo mostrar si el usuario NO es el creador de la quedada --}}
+                {{#unless (eq emailUsuario quedada.email_creador)}}
+                <div class="sidebar-card action-card mb-4">
+
+                    {{#if esApuntado}}
+                    {{!-- Usuario ya apuntado: mostrar opción de desapuntarse --}}
+                    <h5 class="mb-3 fw-bold" style="color: var(--primary);">
+                        <i class="bi bi-check-circle-fill me-2"></i>¡Ya estás apuntado!
+                    </h5>
+                    <p class="text-muted small mb-4">
+                        Estás en la lista de participantes. ¿Has cambiado de idea?
+                    </p>
+                    <form action="/desapuntarseQuedada/{{quedada.id_quedada}}" method="POST">
+                        <button type="submit" class="btn btn-danger w-100 rounded-pill"
+                            onclick="return confirm('¿Estás seguro de que quieres desapuntarte de la quedada?')">
+                            <i class="bi bi-person-dash-fill me-2"></i>Desapuntarse
+                        </button>
+                    </form>
+                    {{else}}
+                    {{!-- Usuario no apuntado: mostrar opción de apuntarse --}}
+                    <h5 class="mb-3 text-success fw-bold">
+                        <i class="bi bi-lightning-charge-fill me-2"></i>¿Te animas?
+                    </h5>
+                    <p class="text-muted small mb-4">
+                        Apúntate a la quedada y disfruta del camino con otros senderistas.
+                    </p>
+                    <form action="/apuntarseQuedada/{{quedada.id_quedada}}" method="POST">
+                        <button type="submit" class="btn btn-join w-100 mb-3">
+                            <i class="bi bi-person-plus-fill me-2"></i>Apuntarse a la Quedada
+                        </button>
+                    </form>
+                    {{/if}}
+
+                </div>
+                {{/unless}}
+
+
+                <!-- Volver -->
+                <a href="javascript:history.back()" class="btn btn-outline-secondary w-100 rounded-pill">
+                    <i class="bi bi-arrow-left me-2"></i>Volver a Quedadas
+                </a>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const map = L.map('map-{{quedada.id_ruta}}', {
+        attributionControl: false,
+        doubleClickZoom: false
+    });
+
+    L.tileLayer('https://{s}.tile.openstreetmap.de/{z}/{x}/{y}.png').addTo(map);
+
+    //GeoJSON de la ruta
+    const geojson = {{{quedada.geom_json}}};
+
+    const layer = L.geoJSON(geojson, {
+        color: 'green',
+        weight: 4
+    }).addTo(map);
+
+    //coordenadas
+    const coords = geojson.coordinates;
+
+    //inicio de la ruta
+        const inicio = coords[0];
+
+    L.marker([inicio[1], inicio[0]])
+        .addTo(map)
+        .bindPopup("Inicio de la ruta");
+
+    //ajustar la vista
+    map.fitBounds(layer.getBounds());
+
+    //fix visual
+        setTimeout(() => {
+        map.invalidateSize();
+    }, 100);
+});
+</script>

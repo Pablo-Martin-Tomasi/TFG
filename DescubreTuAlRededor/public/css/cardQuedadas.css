@@ -1,0 +1,158 @@
+:root {
+    --quedada-bg: #ffffff;
+    --quedada-accent: #6b8f58; /* Verde naturaleza */
+    --quedada-accent-light: rgba(107, 143, 88, 0.1);
+    --quedada-text-main: #2c3e2d;
+    --quedada-text-muted: #666;
+    --quedada-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    --quedada-shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.contenedor-quedadas {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 30px;
+    padding: 40px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.quedada-card {
+    background: var(--quedada-bg);
+    border-radius: 24px;
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--quedada-shadow);
+    position: relative;
+}
+
+.quedada-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--quedada-shadow-hover);
+    border-color: var(--quedada-accent-light);
+}
+
+.quedada-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 6px;
+    height: 100%;
+    background: var(--quedada-accent);
+    opacity: 0.8;
+}
+
+.quedada-body {
+    padding: 28px;
+    flex-grow: 1;
+}
+
+.quedada-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--quedada-text-main);
+    margin-bottom: 15px;
+    line-height: 1.2;
+    font-family: 'Outfit', sans-serif;
+}
+
+.quedada-info-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    color: var(--quedada-text-muted);
+    font-size: 0.95rem;
+}
+
+.quedada-info-item i {
+    color: var(--quedada-accent);
+    font-size: 1.1rem;
+    width: 20px;
+    text-align: center;
+}
+
+.quedada-date-badge {
+    background: var(--quedada-accent-light);
+    color: var(--quedada-accent);
+    padding: 6px 14px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.quedada-footer {
+    padding: 20px 28px;
+    background: #fcfcfc;
+    border-top: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn-quedada-detail {
+    background: linear-gradient(135deg, var(--quedada-accent) 0%, #4a7c44 100%);
+    color: white;
+    text-decoration: none;
+    padding: 10px 24px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(107, 143, 88, 0.3);
+    border: none;
+}
+
+.btn-quedada-detail:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(107, 143, 88, 0.5);
+    color: white;
+}
+
+.quedada-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--quedada-text-muted);
+    background: white;
+    border-radius: 24px;
+    border: 1px dashed rgba(107, 143, 88, 0.3);
+    margin-top: 20px;
+}
+
+.empty-icon-container {
+    width: 100px;
+    height: 100px;
+    background: var(--quedada-accent-light);
+    color: var(--quedada-accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 25px;
+}
+
+.quedada-empty i {
+    font-size: 3rem;
+    opacity: 0.8;
+}
+
+.quedada-empty h3 {
+    color: var(--quedada-text-main);
+    font-weight: 800;
+    margin-bottom: 10px;
+    font-family: 'Outfit', sans-serif;
+}
+
+.quedada-empty p {
+    max-width: 450px;
+    margin: 0 auto;
+    line-height: 1.6;
+}

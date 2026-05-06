@@ -1,69 +1,259 @@
-<div class="container-fluid mt-4">
-
-    <a href="/ruta/{{ruta.id_ruta}}/anadirImagenRuta" class="btn btn-success btn-custom" role="button">Añadir imagen</a>
-
-    <!-- Título -->
-    <div class="row mb-4">
-        <div class="col text-center">
-            <h3>{{ruta.nombre_ruta}}</h3>
-        </div>
-    </div>
-
-    <div class="row">
-
-        <!-- COLUMNA IZQUIERDA -->
-        <div class="col-lg-9">
-
-            <!-- Foto principal -->
-            <div class="photo-box mb-4">
-                <img src="{{ruta.mapa_ruta}}" alt="Mapa de la ruta"
-                    style="width: 100%; height: 100%; object-fit: contain; display: block;">
+<div class="detalle-ruta-body pb-5">
+    <!-- Hero Section -->
+    <section class="hero-ruta text-center">
+        <div class="container">
+            <h1 class="display-4">{{ruta.nombre_ruta}}</h1>
+            {{#if esCreador}}
+            <div class="mb-3">
+                <a href="/ruta/{{ruta.id_ruta}}/anadirImagenRuta" class="btn-owner" role="button">
+                    <i class="bi bi-plus-circle-fill"></i> Añadir imágenes
+                </a>
             </div>
+            {{/if}}
+        </div>
+    </section>
 
-            <!-- Galería de imágenes adicionales -->
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mb-4">
-                {{#each imagenes}}
-                <div class="col">
-                    <div class="photo-box-gallery">
-                        <img src="{{this.imagen_ruta}}" class="img-fluid rounded shadow-sm w-100 h-100 object-fit-cover" 
-                             alt="Imagen de la ruta">
+    <div class="container main-content-wrapper">
+        <div class="row">
+            <!-- Columna Principal -->
+            <div class="col-lg-8">
+
+                <!-- Mapa Principal -->
+                <div class="map-container mb-4">
+                    <div class="card-img-container">
+                        <div id="map-{{ruta.id_ruta}}" class="map-card"></div>
                     </div>
                 </div>
-                {{else}}
-                <div class="col-12">
-                    <p class="text-muted italic">No hay fotos adicionales de esta ruta aún. ¡Sé el primero en añadir una!</p>
+
+                <!-- Galería de fotos -->
+                <h4 class="mb-4 fw-bold"><i class="bi bi-images me-2 text-success"></i> Galería de la ruta</h4>
+                <div class="row g-4 mb-5">
+                    {{#each imagenes}}
+                    <div class="col-md-6 col-lg-4">
+                        <div class="gallery-card shadow-sm">
+                            <img src="{{this.imagen_ruta}}" alt="Foto de la ruta">
+                        </div>
+                    </div>
+                    {{else}}
+                    <div class="col-12">
+                        <div class="p-4 border rounded bg-white text-center">
+                            <p class="text-muted mb-0"><i class="bi bi-camera-fill me-2"></i>Aún no hay fotos
+                                adicionales. ¡Espera a que el creador de la ruta agregue imagenes!</p>
+                        </div>
+                    </div>
+                    {{/each}}
                 </div>
-                {{/each}}
             </div>
 
-            <!-- Comentarios -->
-            <div class="comment-box">
-                Comentarios
+
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <div class="sidebar-card">
+                    <h5><i class="bi bi-info-circle"></i>Datos de la ruta</h5>
+
+                    <span class="label bi bi-clock"> Tiempo->  </span>
+                    <span class="value">{{ruta.duracion_estimacion}} min</span><br>
+
+                    <span class="label bi bi-geo-alt"> Km-> </span>
+                    <span class="value">{{ruta.km}}</span><br>
+
+                    <span class="label bi bi-chevron-double-up"> Alt. Max-> </span>
+                    <span class="value">{{ruta.altura_max}}</span><br>
+
+                    <span class="label bi bi-chevron-double-down"> Alt. Min-> </span>
+                    <span class="value">{{ruta.altura_min}}</span><br>
+
+                    <span class="label bi bi-graph-up-arrow"> D. Pos-> </span>
+                    <span class="value">{{ruta.desnivel_pos}}</span><br>
+
+                    <span class="label bi bi-graph-down-arrow"> D. Neg-> </span>
+                    <span class="value">{{ruta.desnivel_neg}}</span><br>
+
+                    <span class="label bi bi-lightning-charge"> Dificultad-> </span>
+                    <span class="value">{{ruta.dificultad_ruta}}</span>
+                </div>
+
+                <div class="sidebar-card">
+                    <h5><i class="bi bi-info-circle"></i> Sobre la ruta</h5>
+                    <p class="mb-0 text-muted" style="line-height: 1.6;">{{ruta.descripcion}}</p><br>
+                    <p class="mb-0 text-muted" style="line-height: 1.6;">Ruta creada por -> {{ruta.nombre}}</p><br>
+                </div>
+
+                <div class="sidebar-card">
+                    <h5><i class="bi bi-map"></i> Ubicación</h5>
+                    <p class="mb-3 text-mutedSmall">Consulta la ubicación exacta en Google Maps.</p>
+                    <a href="#" class="btn btn-outline-success w-100 rounded-pill">
+                        <i class="bi bi-google me-2"></i> Ver en Maps
+                    </a>
+                </div>
+
+                <div class="sidebar-card action-card mb-4">
+                    <h5 class="mb-3 text-success fw-bold"><i class="bi bi-lightning-charge-fill me-2"></i>¿Te animas?
+                    </h5>
+                    <p class="text-muted small mb-4">Organiza una quedada para esta ruta y disfruta del camino con otros
+                        senderistas.</p>
+                    <a href="/organizarQuedada/{{ruta.id_ruta}}"
+                        class="btn btn-quedada w-100 rounded-pill py-3 fw-bold">
+                        <i class="bi bi-calendar-plus-fill me-2"></i>Organizar Quedada
+                    </a>
+                </div>
+
+                <div class="sidebar-card action-card mb-4">
+                    <h5 class="mb-3 text-success fw-bold"><i class="bi bi-lightning-charge-fill me-2"></i>Acciones
+                    </h5>
+                    {{#if esCreador}}
+                    {{else}}
+                    {{#if es_hecha}}
+                    <div class="mb-2">
+                        <span class="text-success fw-bold">
+                            <i class="bi bi-check-circle-fill me-1"></i> ¡Ya has hecho esta ruta!
+                        </span>
+                    </div>
+                    {{else}}
+                    <form action="/rutaHecha/{{ruta.id_ruta}}" method="POST" style="display: inline-block;">
+                        <button type="submit" title="Marcar como hecha" class="btn-fav text-success">
+                            <i class="bi bi-check-lg"></i>
+                        </button>
+                    </form>
+                    {{/if}}
+                    {{/if}}
+
+                    <br><br>
+
+                    {{#if es_favorita}}
+                    <form action="/rutaNoFav/{{ruta.id_ruta}}" method="POST" class="fav-form"
+                        style="display: inline-block;">
+                        <button type="submit" class="btn-fav" title="Quitar de favoritas">
+                            <i class="bi bi-heart-fill text-danger"></i>
+                        </button>
+                    </form>
+                    {{else}}
+                    <form action="/rutaFav/{{ruta.id_ruta}}" method="POST" class="fav-form"
+                        style="display: inline-block;">
+                        <button type="submit" class="btn-fav" title="Añadir a favoritas">
+                            <i class="bi bi-suit-heart text-danger"></i>
+                        </button>
+                    </form>
+                    {{/if}}
+                </div>
+
+                <a href="javascript:history.back()" class="btn btn-outline-secondary w-100 rounded-pill">
+                    <i class="bi bi-arrow-left me-2"></i>Volver
+                </a>
             </div>
 
+            <!-- Sección de Comentarios (Al final para móviles y pantalla completa en desktop) -->
+            <div class="col-12 mt-5">
+                <div class="comments-section mb-4">
+                    <h4 class="mb-4 fw-bold"><i class="bi bi-chat-left-text me-2 text-success"></i> Comentarios</h4>
+
+                    {{#if es_hecha}}
+                    <div class="form-container card shadow-sm p-4 mb-4">
+                        <h3 class="form-title mb-4">
+                            <i class="bi bi-signpost-split me-2"></i>Deja tu opinión de la ruta
+                        </h3>
+                        <form action="/comentario/{{ruta.id_ruta}}" method="post" enctype="multipart/form-data">
+                            <div class="mb-3 icon-input">
+                                <textarea class="form-control" rows="4" name="comentario"
+                                    placeholder="Cómo fue tu experiencia con la ruta..." required></textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">
+                                    <i class="bi bi-image me-1"></i> Subir foto
+                                </label>
+                                <input type="file" class="form-control" name="url_imagen" accept="image/*">
+                            </div>
+
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-success px-5 rounded-pill">
+                                    <i class="bi bi-send me-1"></i> Comentar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    {{/if}}
+
+                    <div class="comments-list mt-4">
+                        {{#each comentarios}}
+                        <div class="comment-item py-4 {{#unless @last}}border-bottom{{/unless}}">
+                            <div class="d-flex align-items-start">
+                                <div class="comment-avatar-circle me-3 d-flex align-items-center justify-content-center bg-light rounded-circle"
+                                    style="min-width: 48px; height: 48px; color: #4a7c44; font-weight: 700; border: 1px solid #dee2e6; font-size: 1.1rem;">
+                                    {{#if nombre}}
+                                    {{substring nombre 0 1}}
+                                    {{else}}
+                                    U
+                                    {{/if}}
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <span class="fw-bold text-dark" style="font-size: 1rem;">{{nombre}}</span>
+                                        <span class="text-muted small" style="font-size: 0.85rem;">{{formatDate
+                                            fecha_comentario}}</span>
+                                    </div>
+                                    <div class="comment-text text-muted" style="font-size: 0.95rem; line-height: 1.6;">
+                                        {{comentario}}
+                                    </div>
+                                    {{#if url_imagen}}
+                                    <div class="comment-image-wrapper mt-3" style="max-width: 300px;">
+                                        <img src="{{url_imagen}}" alt="Imagen del comentario"
+                                            class="img-fluid rounded-3 shadow-sm border">
+                                    </div>
+                                    {{/if}}
+                                </div>
+                            </div>
+                        </div>
+                        {{else}}
+                        <div class="text-center py-5">
+                            <div class="bg-light d-inline-flex p-4 rounded-circle mb-3">
+                                <i class="bi bi-chat-dots text-muted" style="font-size: 2.5rem;"></i>
+                            </div>
+                            <p class="text-muted">Aún no hay comentarios. ¡Sé el primero en compartir tu experiencia!
+                            </p>
+                        </div>
+                        {{/each}}
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <!-- COLUMNA DERECHA -->
-        <div class="col-lg-3">
-
-            <div class="side-box mb-3">
-                <strong>Direction Google Maps</strong>
-            </div>
-
-            <div class="side-box mb-3">
-                <strong>Nota global de la ruta por todos los usuario</strong>
-            </div>
-
-            <div class="side-box description-box">
-                Descripcion con datos de cicha ruta
-                <p>Descripcion {{ruta.descripcion}}</p>
-                <br>
-                <p>Km -> {{ruta.km}}</p>
-                <p>Desnivel positivo -> {{ruta.desnivel_pos}}</p>
-                <p>Desnivel negativo -> {{ruta.desnivel_neg}}</p>
-                <p>Altura maxima -> {{ruta.altura_max}}</p>
-                <p>Altura minima -> {{ruta.altura_min}}</p>
-            </div>
-        </div>
     </div>
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const map = L.map('map-{{ruta.id_ruta}}', {
+        attributionControl: false,
+        doubleClickZoom: false
+    });
+
+    L.tileLayer('https://{s}.tile.openstreetmap.de/{z}/{x}/{y}.png').addTo(map);
+
+    //GeoJSON de la ruta
+    const geojson = {{{ruta.geom_json}}};
+
+    const layer = L.geoJSON(geojson, {
+        color: 'green',
+        weight: 4
+    }).addTo(map);
+
+    //coordenadas
+    const coords = geojson.coordinates;
+
+    //inicio de la ruta
+        const inicio = coords[0];
+
+    L.marker([inicio[1], inicio[0]])
+        .addTo(map)
+        .bindPopup("Inicio de la ruta");
+
+    //ajustar la vista
+    map.fitBounds(layer.getBounds());
+
+    //fix visual
+        setTimeout(() => {
+        map.invalidateSize();
+    }, 100);
+});
+</script>

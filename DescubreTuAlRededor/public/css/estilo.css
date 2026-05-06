@@ -4,6 +4,17 @@
     padding: 0;
 }
 
+.nav-logo {
+    height: 55px;
+    width: auto;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+.nav-logo:hover {
+    transform: scale(1.05);
+}
+
 .barraNavegacion nav {
     margin-top: 0;
 }
@@ -167,6 +178,7 @@ main {
     transition: all 0.3s ease;
     cursor: pointer;
 }
+
 .anadirRutaFormulario input[type="file"]:hover {
     background-color: #eaf1e8;
 }
@@ -249,8 +261,8 @@ main {
 }
 
 .anadirRutaFormulario textarea {
-  height: 120px;
-  resize: vertical;
+    height: 120px;
+    resize: vertical;
 }
 
 /* Galería de imágenes en detalle de ruta */
@@ -268,4 +280,114 @@ main {
 
 .object-fit-cover {
     object-fit: cover;
+}
+
+/* Estilos para Organizar Quedada */
+.organizar-quedada-section {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    min-height: calc(100vh - 56px);
+    padding-top: 50px;
+}
+
+.quedada-card {
+    border: none;
+    transition: transform 0.3s ease;
+    border-radius: 20px !important;
+}
+
+.quedada-header {
+    background: linear-gradient(135deg, #91b57d 0%, #4a7c44 100%);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+.fw-600 {
+    font-weight: 600;
+}
+
+.btn-quedada {
+    background: linear-gradient(135deg, #91b57d 0%, #4a7c44 100%);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 15px rgba(145, 181, 125, 0.4);
+    transition: all 0.3s ease;
+}
+
+.btn-quedada:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(145, 181, 125, 0.6);
+    color: white;
+}
+
+.form-control:focus {
+    border-color: #91b57d;
+    box-shadow: 0 0 0 0.25rem rgba(145, 181, 125, 0.25);
+}
+
+
+/* Botón de volver al perfil mejorado */
+.btn-volver-perfil {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 25px;
+    background: white;
+    color: #4a7c44;
+    border: 2px solid #91b57d;
+    border-radius: 50px;
+    font-weight: 700;
+    font-family: 'Outfit', sans-serif;
+    text-decoration: none !important;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+}
+
+.btn-volver-perfil:hover {
+    background: linear-gradient(135deg, #91b57d, #6b8f58);
+    color: white !important;
+    border-color: transparent;
+    transform: translateY(-3px) translateX(-5px);
+    box-shadow: 0 8px 25px rgba(145, 181, 125, 0.3);
+}
+
+.btn-volver-perfil i {
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+}
+
+.btn-volver-perfil:hover i {
+    transform: translateX(-3px);
+}
+
+/* Estilos para Comentarios (Estilo Wikiloc) */
+.comment-item {
+    transition: background-color 0.2s ease;
+}
+
+.comment-item:hover {
+    background-color: #fafafa;
+}
+
+.comment-avatar-circle {
+    transition: transform 0.3s ease;
+    background-color: #f8f9fa;
+}
+
+.comment-item:hover .comment-avatar-circle {
+    transform: scale(1.05);
+    border-color: #91b57d !important;
+}
+
+.comment-text {
+    color: #4b4b4b !important;
+}
+
+.comment-image-wrapper img {
+    cursor: zoom-in;
+    transition: opacity 0.3s ease;
+}
+
+.comment-image-wrapper img:hover {
+    opacity: 0.9;
 }

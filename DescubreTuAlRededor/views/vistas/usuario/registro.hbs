@@ -1,16 +1,33 @@
-<div class="loginRegistro d-flex justify-content-center align-items-center">
+<div class="loginRegistro">
     <div class="login-container">
-        <h1>Resgistro</h1>
-        <p>¿Ya eres miembro? <a href="login">Iniciar sesión</a></p>
+        <h1>Únete a nosotros</h1>
+        <p>¿Ya tienes una cuenta? <a href="/login">Inicia sesión aquí</a></p>
+        
         <form action="/register" method="post">
-            <input type="text" name="nombre" placeholder="Nombre de usuario" required><br>
-            <input type="email" name="email" placeholder="Correo electronico" required><br>
-            <input type="password" name="contrasena" placeholder="Contraseña" required><br>
-            <button type="submit">Registrarse</button>
-            <a href="/" class="btn btn-warning btn-volver" role="button">Volver</a>
+            <div class="form-group">
+                <i class="bi bi-person"></i>
+                <input type="text" name="nombre" placeholder="Nombre completo" required>
+            </div>
+
+            <div class="form-group">
+                <i class="bi bi-envelope"></i>
+                <input type="email" name="email" placeholder="Correo electrónico" required>
+            </div>
+            
+            <div class="form-group">
+                <i class="bi bi-lock"></i>
+                <input type="password" name="contrasena" placeholder="Contraseña segura" required>
+            </div>
+
+            <div class="btn-group-custom">
+                <button type="submit" class="btn-login-main">Crear Cuenta</button>
+                <a href="/" class="btn-login-back">Volver</a>
+            </div>
         </form>
+
         {{#if error}}
-        <div class="alert alert-danger">
+        <div class="alert alert-danger d-flex align-items-center gap-2 justify-content-center">
+            <i class="bi bi-exclamation-triangle-fill"></i>
             {{error}}
         </div>
         {{/if}}

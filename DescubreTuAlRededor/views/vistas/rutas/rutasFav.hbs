@@ -1,0 +1,108 @@
+<div class="container py-5">
+    <div class="d-flex justify-content-start">
+        <a href="javascript:history.back()" class="btn-volver-perfil">
+            <i class="bi bi-arrow-left-circle-fill"></i> Volver
+        </a>
+    </div>
+    <!-- Encabezado de la página -->
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold" style="color: #1a401f; font-family: 'Outfit', sans-serif;">Mis Rutas Favoritas</h1>
+        <div class="mx-auto mb-3" style="width: 60px; height: 4px; background: linear-gradient(135deg, #91b57d, #6b8f58); border-radius: 2px;"></div>
+        <p class="lead text-muted">Aquí tienes tu colección personal de rutas guardadas.</p>
+    </div>
+
+    {{#if rutasFavUsuario.length}}
+        <div class="contenedor">
+            {{#each rutasFavUsuario}}
+            <div class="card custom-card">
+                <div class="card-img-container">
+                    <div id="map-{{id_ruta}}" class="map-card"></div>
+                </div>
+
+                <div class="card-body">
+                    <div class="card-main-info">
+                        <h5 class="card-title">{{nombre_ruta}}</h5>
+                        <span class="badge-difficulty {{dificultad_ruta}}">
+                            {{dificultad_ruta}}
+                        </span>
+                    </div>
+
+                    <div class="card-sub-info">
+                        <p class="card-text">{{descripcion_corta}}</p>
+                        <span class="km-info">{{km}} km</span>
+                    </div>
+                </div>
+
+                <div class="card-footer custom-footer">
+                    <form action="/rutaNoFav/{{id_ruta}}" method="POST" class="fav-form">
+                        <button type="submit" class="btn-fav" title="Quitar de favoritas">
+                            <i class="bi bi-heart-fill text-danger"></i>
+                        </button>
+                    </form>
+
+                    <a href="/detalleRuta/{{id_ruta}}" class="btn-detail">
+                        Detalle
+                    </a>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    {{else}}
+        <!-- Estado vacío -->
+        <div class="text-center py-5 mt-4">
+            <div class="mb-4">
+                <div class="d-inline-flex align-items-center justify-content-center bg-light rounded-circle" style="width: 120px; height: 120px;">
+                    <i class="bi bi-heart" style="font-size: 3.5rem; color: #ced4da;"></i>
+                </div>
+            </div>
+            <h3 class="fw-bold text-dark mb-3">¿Todavía sin favoritas?</h3>
+            <p class="text-muted mb-4 mx-auto" style="max-width: 400px;">
+                Parece que aún no has guardado ninguna ruta. ¡Explora y guarda las que más te gusten para tenerlas siempre a mano!
+            </p>
+            <a href="/verRutas" class="btn btn-primary px-5 py-3 shadow-sm" style="background: linear-gradient(135deg, #91b57d, #6b8f58); border: none; border-radius: 50px; font-weight: 600; transition: all 0.3s ease;">
+                Explorar Rutas
+            </a>
+        </div>
+    {{/if}}
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        {{#each rutasFavUsuario}}
+        (function() {
+            const map = L.map('map-{{id_ruta}}', {
+                attributionControl: false,
+                doubleClickZoom: false
+            });
+
+            L.tileLayer('https://{s}.tile.openstreetmap.de/{z}/{x}/{y}.png').addTo(map);
+
+            //convertir las coords a GeoJSON
+            const geojson = {{{geom_json}}};
+
+            const layer = L.geoJSON(geojson, {
+                color: 'green',
+                weight: 4
+            }).addTo(map);
+
+            const coords = geojson.coordinates;
+
+            //punto de inicio de la ruta
+            const inicio = coords[0];
+
+            L.marker([inicio[1], inicio[0]])
+            .addTo(map)
+            .bindPopup("Inicio de la ruta");
+
+            //ajustar el zoom
+            map.fitBounds(layer.getBounds());
+
+            //poder ver el mapa bien
+            setTimeout(() => {
+                map.invalidateSize();
+            }, 100);
+        })();
+        {{/each}}
+
+    });
+</script>

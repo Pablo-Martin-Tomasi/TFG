@@ -30,8 +30,48 @@
         <div class="indicators"></div>
     </div>
 
-    <div class="text-center mb-5">
-        <h1>TFG</h1>
+    <div class="contenedor">
+        {{#each routes}}
+        <div class="card custom-card">
+            <div class="card-img-container">
+                <div id="map-{{id_ruta}}" class="map-card"></div>
+            </div>
+
+            <div class="card-body">
+                <div class="card-main-info">
+                    <h5 class="card-title">{{nombre_ruta}}</h5>
+                    <span class="badge-difficulty {{dificultad_ruta}}">
+                        {{dificultad_ruta}}
+                    </span>
+                </div>
+
+                <div class="card-sub-info">
+                    <p class="card-text">{{descripcion_corta}}</p>
+                    <span class="km-info">{{km}} km</span>
+                </div>
+            </div>
+
+            <div class="card-footer custom-footer">
+                {{#if es_favorita}}
+                <form action="/rutaNoFav/{{id_ruta}}" method="POST" class="fav-form">
+                    <button type="submit" class="btn-fav">
+                        <i class="bi bi-heart-fill text-danger"></i>
+                    </button>
+                </form>
+                {{else}}
+                <form action="/rutaFav/{{id_ruta}}" method="POST" class="fav-form">
+                    <button type="submit" class="btn-fav">
+                        <i class="bi bi-suit-heart"></i>
+                    </button>
+                </form>
+                {{/if}}
+
+                <a href="/detalleRuta/{{id_ruta}}" class="btn-detail">
+                    Detalle
+                </a>
+            </div>
+        </div>
+        {{/each}}
     </div>
 </div>
 
@@ -75,4 +115,43 @@
 
     // Inicializar
     updateCarousel();
+
+    document.addEventListener("DOMContentLoaded", function () {
+        {{#each routes}}
+        (function() {
+            const map = L.map('map-{{id_ruta}}', {
+                attributionControl: false,
+                doubleClickZoom: false
+            });
+
+            L.tileLayer('https://{s}.tile.openstreetmap.de/{z}/{x}/{y}.png').addTo(map);
+
+            //convertir las coords a GeoJSON
+            const geojson = {{{geom_json}}};
+
+            const layer = L.geoJSON(geojson, {
+                color: 'green',
+                weight: 4
+            }).addTo(map);
+
+            const coords = geojson.coordinates;
+
+            //punto de inicio de la ruta
+            const inicio = coords[0];
+
+            L.marker([inicio[1], inicio[0]])
+            .addTo(map)
+            .bindPopup("Inicio de la ruta");
+
+            //ajustar el zoom
+            map.fitBounds(layer.getBounds());
+
+            //poder ver el mapa bien
+            setTimeout(() => {
+                map.invalidateSize();
+            }, 100);
+        })();
+        {{/each}}
+
+    });
 </script>

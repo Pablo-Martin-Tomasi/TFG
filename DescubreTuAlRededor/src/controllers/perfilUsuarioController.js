@@ -49,7 +49,7 @@ async function cambiarContrasenia(req, res) {
         // comprobar que las nuevas contraseñas coinciden
         if (contraseniaNueva !== confirmarContrasenia) {
             return res.render('vistas/usuario/modificarContrasenia', {
-                title: 'Modificar contraseña',
+                title: 'Modificar contraseña | Descubre tu al rededor',
                 bodyClass: 'modificarContrasenia',
                 mostrarNav: true,
                 nombre: req.session.nombre,
@@ -75,7 +75,7 @@ async function cambiarContrasenia(req, res) {
 
         if (!coincide) {
             return res.render('vistas/usuario/modificarContrasenia', {
-                title: 'Modificar contraseña',
+                title: 'Modificar contraseña | Descubre tu al rededor',
                 bodyClass: 'modificarContrasenia',
                 mostrarNav: true,
                 nombre: req.session.nombre,

@@ -2,10 +2,10 @@
     <div class="anadirRutaFormulario">
         <h1>Añadir nueva ruta</h1>
         <form action="/anadirRuta" method="POST" enctype="multipart/form-data">
-            <label for="nombre_ruta">Nombre de la ruta</label>
+            <label for="nombre_ruta">Nombre de la ruta*</label>
             <input type="text" id="nombre_ruta" name="nombre_ruta" placeholder="Nombre de la ruta" required>
 
-            <label for="dificultad_ruta">Dificultad</label>
+            <label for="dificultad_ruta">Dificultad*</label>
             <select id="dificultad_ruta" name="dificultad_ruta" class="form-select" required>
                 <option value="" disabled selected>Selecciona la dificultad</option>
                 <option value="Fácil">Fácil</option>
@@ -13,39 +13,48 @@
                 <option value="Difícil">Difícil</option>
             </select>
 
-            <label for="km">Kilómetros</label>
-            <input type="number" id="km" name="km" placeholder="Km de la ruta" required>
+            <p>Haz el mapa de la ruta*</p>
+            <div id="map" style="height: 400px;"></div>
+            <input type="hidden" id="coordenadas" name="coordenadas">
+            <input type="hidden" id="direccion" name="direccion" placeholder="Direccion de la ruta" required>
 
-            <label for="direccion">Dirección</label>
-            <input type="text" id="direccion" name="direccion" placeholder="Dirección de la ruta" required>
+            <label for="km">Kilómetros*</label>
+            <input type="number" id="km" name="km" placeholder="Km de la ruta" readonly>
 
-            <label for="mapaDeLaRuta">Mapa de la ruta</label>
-            <input type="file" name="mapaDeLaRuta" required><br>
-
-            <label for="descripcion">Descripción</label>
+            <label for="descripcion">Descripción*</label>
             <textarea type="text" id="descripcion" name="descripcion" placeholder="Descripción de la ruta" rows="3"
                 required></textarea>
 
+            <label for="duracion_estimacion">Tiempo (min)*</label>
+            <input type="number" id="duracion_estimacion" name="duracion_estimacion"
+                placeholder="Tiempo estimado de la ruta (min)" required>
+
+            <label for="tipo_ruta">Tipo de la ruta*</label>
+            <select id="tipo_ruta" name="tipo_ruta" class="form-select" required>
+                <option value="" disabled selected>Selecciona el tipo de ruta</option>
+                <option value="circular">Circular</option>
+                <option value="ida_vuelta">Ida y vuelta</option>
+            </select>
 
             <div class="row mb-3">
                 <div class="col-md-6">
-                    <label for="altura_max">Altura máxima (m)</label>
+                    <label for="altura_max">Altura máxima (m)*</label>
                     <input type="number" id="altura_max" name="altura_max" placeholder="Altura máxima" required>
                 </div>
                 <div class="col-md-6">
-                    <label for="altura_min">Altura mínima (m)</label>
+                    <label for="altura_min">Altura mínima (m)*</label>
                     <input type="text" id="altura_min" name="altura_min" placeholder="Altura mínima" required>
                 </div>
             </div>
 
             <div class="row mb-3">
                 <div class="col-md-6">
-                    <label for="desnivel_pos">Desnivel positivo (m)</label>
+                    <label for="desnivel_pos">Desnivel positivo (m)*</label>
                     <input type="number" id="desnivel_pos" name="desnivel_pos" placeholder="Desnivel positivo" required
                         min="0">
                 </div>
                 <div class="col-md-6">
-                    <label for="desnivel_neg">Desnivel negativo (m)</label>
+                    <label for="desnivel_neg">Desnivel negativo (m)*</label>
                     <input type="number" id="desnivel_neg" name="desnivel_neg" placeholder="Desnivel negativo" required
                         min="0">
                 </div>
@@ -53,8 +62,99 @@
 
             <div class="d-flex justify-content-center gap-5 mt-4">
                 <button type="submit">Añadir ruta</button>
-                <a href="/" class="btn btn-warning btn-volver px-4" role="button">Volver</a>
+                <a href="/verRutas" class="btn btn-warning btn-volver px-4" role="button">Volver</a>
             </div>
         </form>
     </div>
 </div>
+
+<script>
+    window.onload = function () {
+        // Inicializamos el mapa centrado en coordenadas generales (ej: Madrid) y con zoom 12 
+        // lo ideal sera hacer que pille tu localizacion pero eso sera seguramente lo ultimo no olvidarte de eso
+        const map = L.map('map').setView([40.4168, -3.7038], 15);
+
+        // 2. Añadimos la capa de los "azulejos" (tiles) de OpenStreetMap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+        // 3. Variable para guardar poder marcar varios puntos que van a hacer la ruta
+        let puntosMapa = []; // un array
+        let linea = null;
+        let puntoInicial = null;
+        let direccionAsignada = false; // para no repetir llamadas a la API
+
+        map.on('click', function (e) {
+            const lat = e.latlng.lat;
+            const lng = e.latlng.lng;
+
+            // guardar el punto
+            puntosMapa.push([lat, lng]);
+
+            console.log(puntosMapa); // para que veas cómo crece
+
+            if (puntosMapa.length === 1) {
+                puntoInicial = L.marker([lat, lng])
+                    .addTo(map)
+                    .bindPopup("Punto de inicio de la ruta")
+                    .openPopup();
+
+                // solo cogemos la dirección del PRIMER punto
+                if (!direccionAsignada) {
+                    obtenerDireccion(lat, lng);
+                    direccionAsignada = true;
+                }
+            }
+
+            // borrar la linea anterior
+            if (linea !== null) {
+                map.removeLayer(linea);
+            }
+
+            // dibujar la linea del mapa
+            linea = L.polyline(puntosMapa, {
+                color: 'blue'
+            }).addTo(map);
+
+            distanciaKm();
+        });
+
+        // funcion para poder mostrar los km que hacen la ruta
+        function distanciaKm() {
+            let distanciaTotal = 0;
+
+            for (let i = 1; i < puntosMapa.length; i++) {
+                const puntoA = L.latLng(puntosMapa[i - 1]);
+                const puntoB = L.latLng(puntosMapa[i]);
+
+                distanciaTotal += map.distance(puntoA, puntoB);
+            }
+
+            document.getElementById('km').value = (distanciaTotal / 1000).toFixed(2);
+        }
+
+        // function para obtener la direccion automaticamente (solo ciudad + pais)
+        function obtenerDireccion(lat, lng) {
+            fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`)
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data);
+
+                    const addr = data.address;
+
+                    // coger solo ciudad/pueblo
+                    const ciudad = addr.city || addr.town || addr.village || addr.hamlet || "Desconocido";
+                    const pais = addr.country || "";
+
+                    const direccionFinal = `${ciudad}, ${pais}`;
+
+                    document.getElementById("direccion").value = direccionFinal;
+                })
+                .catch(err => console.error("Error obteniendo dirección:", err));
+        }
+
+        // antes de enviar el formulario guardamos las coordenadas
+        document.querySelector("form").addEventListener("submit", function () {
+            document.getElementById("coordenadas").value = JSON.stringify(puntosMapa);
+        });
+    }
+</script>

@@ -1,0 +1,71 @@
+<div class="organizar-quedada-section py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+                <div class="quedada-card shadow-lg border-0 rounded-4 overflow-hidden">
+                    <div class="quedada-header p-4 text-center text-white">
+                        <h2 class="fw-bold mb-0"><i class="bi bi-calendar-event me-2"></i>Organizar Quedada</h2>
+                        <p class="mb-0 opacity-75">Invita a otros aventureros a tu ruta</p>
+                    </div>
+                    
+                    <div class="quedada-body p-4 p-md-5 bg-white">
+                        <form action="/organizarQuedada/{{id_ruta}}" method="POST" class="needs-validation">
+                            
+                            <!-- Día y Hora -->
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-6">
+                                    <label for="dia" class="form-label fw-600">¿Qué día será?</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-end-0"><i class="bi bi-calendar3"></i></span>
+                                        <input type="date" class="form-control border-start-0 bg-light" id="dia" name="dia" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="hora" class="form-label fw-600">¿A qué hora?</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-end-0"><i class="bi bi-clock"></i></span>
+                                        <input type="time" class="form-control border-start-0 bg-light" id="hora" name="hora" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Punto de encuentro (Dirección) -->
+                            <div class="mb-4">
+                                <label for="direcion" class="form-label fw-600">Punto de encuentro</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0"><i class="bi bi-geo-alt"></i></span>
+                                    <input type="text" class="form-control border-start-0 bg-light" id="direcion" name="direcion" placeholder="Ej: Aparcamiento principal" required>
+                                </div>
+                            </div>
+
+                            <!-- Participantes -->
+                            <div class="mb-4">
+                                <label for="max_participantes" class="form-label fw-600">Máximo de participantes</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0"><i class="bi bi-people"></i></span>
+                                    <input type="number" class="form-control border-start-0 bg-light" id="max_participantes" name="max_participantes" min="1" placeholder="Ej: 10" required>
+                                </div>
+                            </div>
+
+                            <!-- Descripción -->
+                            <div class="mb-4">
+                                <label for="descripcion" class="form-label fw-600">Descripción de la quedada</label>
+                                <textarea class="form-control bg-light" id="descripcion" name="descripcion" rows="4" placeholder="Cuéntanos un poco sobre el plan..." required></textarea>
+                            </div>
+
+                            <!-- Botones -->
+                            <div class="d-grid gap-2 mt-5">
+                                <button type="submit" class="btn btn-quedada btn-lg rounded-pill fw-bold py-3">
+                                    <i class="bi bi-check-circle-fill me-2"></i>Publicar Quedada
+                                </button>
+                                <a href="javascript:history.back()" class="btn btn-link text-muted text-decoration-none mt-2">
+                                    <i class="bi bi-arrow-left me-1"></i> Cancelar y volver
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

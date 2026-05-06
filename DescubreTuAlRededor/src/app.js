@@ -16,6 +16,24 @@ const perfilUsuarioRoutes = require('./routes/perfilUsuario');
 //ruta para añadir y todo en las rutas de senderismo
 const rutasRoutes = require('./routes/rutas');
 
+//ruta para poder añadir imagenes a las rutas que has agregado
+const imagesRoutes = require('./routes/images');
+
+//ruta para hacer las quedadas
+const quedadaRoutes = require('./routes/quedada');
+
+//ruta para poder apuntarse y desapuntarse de una quedada
+const apuntarseRoutes = require('./routes/apuntarseQuedada');
+
+//ruta para poder añadir una ruta a favoritas
+const favRoutes = require('./routes/routasFavoritas');
+
+//ruta para poder marcar la ruta como hecha
+const historialRoutes = require('./routes/historialRutas');
+
+//ruta para poder añadir un nuevo comentario
+const comentarioRoutes = require('./routes/comentario');
+
 //ruta para la authenticiacion
 const authMiddleware = require('./middleware/auth');
 const { title } = require('process');
@@ -40,7 +58,19 @@ app.set('views', path.join(__dirname, '../views'));//ruta del dico durro
 app.engine('.hbs', engine({//sirve para poder tener la extension de handlebars
     extname: '.hbs',
     helpers: {
-        eq: (a, b) => a === b
+        eq: (a, b) => a === b,
+        formatDate: (date) => {
+            if (!date) return '';
+            const d = new Date(date);
+            const dia = String(d.getDate()).padStart(2, '0');
+            const mes = String(d.getMonth() + 1).padStart(2, '0');
+            const anio = d.getFullYear();
+            return `${dia}/${mes}/${anio}`;
+        },
+        substring: (str, start, len) => {
+            if (!str) return '';
+            return str.substring(start, len);
+        }
     }
 }));
 app.set('view engine', 'hbs');
@@ -80,21 +110,18 @@ app.listen(app.get('port'), () => {
 app.use('/', loginRoutes);
 app.use('/', perfilUsuarioRoutes);
 app.use('/', rutasRoutes);
+app.use('/', imagesRoutes);
+app.use('/', quedadaRoutes);
+app.use('/', apuntarseRoutes);
+app.use('/', favRoutes);
+app.use('/', historialRoutes);
+app.use('/', comentarioRoutes);
 
-// Ruta principal
-app.get('/', (req, res) => {
-    res.render('index', {
-        title: 'Inicio',
-        bodyClass: 'vistaIndex',
-        mostrarNav: true,
-        nombre: req.session.nombre
-    });
-});
 
 //ruta para el perfil del usuario
 app.get('/perfilUsuario', authMiddleware, (req, res) => {
     res.render('vistas/usuario/perfilUsuario', {
-        title: 'Perfil usuario',
+        title: 'Perfil usuario | Descubre tu al rededor',
         bodyClass: 'perfilUsuario',
         mostrarNav: true,
         nombre: req.session.nombre,
@@ -108,7 +135,7 @@ app.get('/perfilUsuario', authMiddleware, (req, res) => {
 //ruta para modificar los datos del usuario
 app.get('/modificarDatosUsuario', authMiddleware, (req, res) => {
     res.render('vistas/usuario/modificarDatosUsuario', {
-        title: 'Modificar datos del usuario',
+        title: 'Modificar datos del usuario | Descubre tu al rededor',
         bodyClass: 'modificarDatosUsuario',
         mostrarNav: true,
         nombre: req.session.nombre,
@@ -119,20 +146,10 @@ app.get('/modificarDatosUsuario', authMiddleware, (req, res) => {
     });
 });
 
-//ver rutas hechas 
-app.get('/verRutasHechas', authMiddleware, (req, res) => {
-    res.render('vistas/usuario/verRutasHechas', {
-        title: 'Ver rutas hechas',
-        bodyClass: 'verRutasHechas',
-        mostrarNav: true,
-        nombre: req.session.nombre
-    });
-});
-
 //ver rutas por hacer 
-app.get('/verRutasPorHacer', authMiddleware, (req, res) => {
-    res.render('vistas/usuario/verRutasPorHacer', {
-        title: 'Ver rutas por hacer',
+app.get('/rutasFav', authMiddleware, (req, res) => {
+    res.render('vistas/rutas/rutasFav', {
+        title: 'Rutas favoritas | Descubre tu al rededor',
         bodyClass: 'verRutasPorHacer',
         mostrarNav: true,
         nombre: req.session.nombre
@@ -143,7 +160,7 @@ app.get('/verRutasPorHacer', authMiddleware, (req, res) => {
 //ver detalle de la ruta
 app.get('/detalleRuta', (req, res) => {
     res.render('vistas/rutas/detalleRuta', {
-        title: 'Ver rutas',
+        title: 'Ver rutas | Descubre tu al rededor',
         bodyClass: 'verRutas',
         mostrarNav: true,
         nombre: req.session.nombre
@@ -153,7 +170,17 @@ app.get('/detalleRuta', (req, res) => {
 //formulario añadir nueva ruta 
 app.get('/anadirRuta', authMiddleware, (req, res) => {
     res.render('vistas/rutas/anadirRuta', {
-        title: 'Añadir nueva ruta',
+        title: 'Añadir nueva ruta | Descubre tu al rededor',
+        bodyClass: 'anadirRuta',
+        mostrarNav: true,
+        nombre: req.session.nombre
+    });
+});
+
+//formulario para editar la ruta
+app.get('/editarRuta', authMiddleware, (req, res) => {
+    res.render('vistas/rutas/editarRuta', {
+        title: 'Editar ruta | Descubre tu alrededor',
         bodyClass: 'anadirRuta',
         mostrarNav: true,
         nombre: req.session.nombre
@@ -163,7 +190,7 @@ app.get('/anadirRuta', authMiddleware, (req, res) => {
 //formulario para poder cambiar la contraseña
 app.get('/modificarContrasenia', authMiddleware, (req, res) => {
     res.render('vistas/usuario/modificarContrasenia', {
-        title: 'Modificar contraseña',
+        title: 'Modificar contraseña | Descubre tu al rededor',
         bodyClass: 'modificarContrasenia',
         mostrarNav: true,
         nombre: req.session.nombre,
@@ -174,7 +201,7 @@ app.get('/modificarContrasenia', authMiddleware, (req, res) => {
 //ruta para modificar los datos del usuario
 app.get('/modificarFotoPerfil', authMiddleware, (req, res) => {
     res.render('vistas/usuario/modificarFotoPerfil', {
-        title: 'Cambiar foto de perfil',
+        title: 'Cambiar foto de perfil | Descubre tu al rededor',
         bodyClass: 'modificarFotoPerfil',
         mostrarNav: true,
         nombre: req.session.nombre,
@@ -185,7 +212,7 @@ app.get('/modificarFotoPerfil', authMiddleware, (req, res) => {
 //ruta para poder ver misRutas
 app.get('/misRutas', authMiddleware, (req, res) => {
     res.render('vistas/rutas/misRutas', {
-        title: 'Mis rutas',
+        title: 'Mis rutas | Descubre tu al rededor',
         bodyClass: 'misRutas',
         mostrarNav: true,
         nombre: req.session.nombre
@@ -195,7 +222,7 @@ app.get('/misRutas', authMiddleware, (req, res) => {
 //ruta para poder ver el detalle de una ruta que has agregado como usuario
 app.get('/miRuta', authMiddleware, (req, res) => {
     res.render('vistas/rutas/miRuta', {
-        title: ruta.nombre_ruta,
+        title: ruta.nombre_ruta + " | Descubre tu al rededor",
         bodyClass: 'verRutas',
         mostrarNav: true,
         nombre: req.session.nombre
@@ -205,19 +232,61 @@ app.get('/miRuta', authMiddleware, (req, res) => {
 //vista de configuracion
 app.get('/configuracion', authMiddleware, (req, res) => {
     res.render('vistas/usuario/configuracion', {
-        title: 'Configuracion',
+        title: 'Configuracion | Descubre tu al rededor',
         bodyClass: 'opciones',
         mostrarNav: true,
         nombre: req.session.nombre
     });
 });
 
-//vista de anadir imagenes
-app.get('/anadirImagenRuta', authMiddleware, (req, res) => {
-    res.render('vistas/rutas/anadirImagenRuta', {
-        title: 'Añadir imagenes a la ruta',
-        bodyClass: 'imagenRuta',
+//vista para organizar quedada
+app.get('/organizarQuedada/:id', authMiddleware, (req, res) => {
+    const { id } = req.params;
+    res.render('vistas/quedada/organizarQuedada', {
+        title: 'Organizar quedada | Descubre tu al rededor',
+        bodyClass: 'organizarQuedada',
+        mostrarNav: true,
+        nombre: req.session.nombre,
+        id_ruta: id
+    });
+});
+
+//vista para poder ver las quedadas
+app.get('/verQuedadas', authMiddleware, (req, res) => {
+    res.render('vistas/quedada/verQuedadas', {
+        title: 'Ver quedadas | Descubre tu al rededor',
+        bodyClass: 'verRutas',//se va a usar la misma body class para el estilo para evitar repeticion
+        mostrarNav: true,
+        nombre: req.session.nombre
+    });
+});
+
+//vista para poder ver el detalle de una quedada
+app.get('/detalleQuedada', authMiddleware, (req, res) => {
+    res.render('vistas/quedada/detalleQuedada', {
+        title: 'Quedada de ' + quedada.id_quedada + " | Descubre tu al rededor",
+        bodyClass: 'detalleQuedada',
+        mostrarNav: true,
+        nombre: req.session.nombre
+    });
+});
+
+//vista para poder ver la vista de todas las quedadas que el a organizado
+app.get('/quedadasOrganizadas', authMiddleware, (req, res) => {
+    res.render('vistas/quedada/quedadasOrganizadas', {
+        title: 'Quedadas organizadas | Descubre tu al rededor',
+        bodyClass: 'verRutas',
         mostrarNav: true,
         nombre: req.session.nombre
     })
-})
+});
+
+//vista para que poder ver las quedadas a las que has participado
+app.get('/quedadasParticipadas', authMiddleware, (req, res) => {
+    res.render('vistas/quedada/quedadasParticipado', {
+        title: 'Quedadas en las que has participado | Descubre tu al rededor',
+        bodyClass: 'verRutas',
+        mostrarNav: true,
+        nombre: req.session.nombre
+    })
+});

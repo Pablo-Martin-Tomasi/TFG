@@ -4,3 +4,6 @@ Esto que hay que instalar es para el registro, el login y la encriptación de la
 
 Este es para las imágenes que las sacan de la bbdd:
 * npm install multer
+
+Api de leaflet para tener un mapa interactivo
+* npm install leaflet
