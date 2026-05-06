@@ -25,7 +25,8 @@ router.post('/anadirRuta', authMiddleware, rutasController.anadirRuta);
 router.get('/detalleRuta/:id', authMiddleware, rutasController.detalleRuta);
 router.get('/misRutas', authMiddleware, rutasController.misRutas);
 router.get('/miRuta/:id', authMiddleware, rutasController.miRuta);
-router.post('/editarRuta/:id', authMiddleware, rutasController.modificarRuta)
+router.post('/editarRuta/:id', authMiddleware, rutasController.modificarRuta);
+router.get('/editarRuta/:id', authMiddleware, rutasController.verFormularioEditar);
 
 
 module.exports = router;

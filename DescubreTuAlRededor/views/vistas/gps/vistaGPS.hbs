@@ -1,0 +1,38 @@
+<div id="map" style="height: 600px;"></div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const map = L.map('map').setView([40.4168, -3.7038], 14);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap'
+    }).addTo(map);
+
+    const bounds = [];
+
+    {{#each routes}}
+    (function () {
+
+        const geojson = {{{geom_json}}};
+
+        const coords = geojson.coordinates;
+
+        const inicio = coords[0];
+
+        // 🔥 ICONO POR DEFECTO LEAFLET
+        const marker = L.marker([inicio[1], inicio[0]])
+            .addTo(map)
+            .bindPopup(`
+                <b>{{nombre_ruta}}</b><br>
+                <a href="/detalleRuta/{{id_ruta}}">
+                    Detalle ruta
+                </a>
+            `);
+
+        bounds.push([inicio[1], inicio[0]]);
+
+    })();
+    {{/each}}
+});
+</script>

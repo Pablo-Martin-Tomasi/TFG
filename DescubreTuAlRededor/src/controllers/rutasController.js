@@ -124,7 +124,7 @@ async function verRutas(req, res) {
         });
 
         res.render('vistas/rutas/verRutas', {
-            title: 'Ver rutas | Descubre tu al rededor',
+            title: 'Ver rutas | Descubre tualrededor',
             bodyClass: 'verRutas',
             mostrarNav: true,
             nombre: req.session.nombre,
@@ -183,7 +183,18 @@ async function verFormularioEditar(req, res) {
             [id, email]
         );
 
-        
+        if (result.rows.length === 0) {
+            return res.status(403).send("No tienes acceso a esta ruta");
+        }
+
+        res.render('vistas/rutas/editarRuta', {
+            title: 'Editar ruta | Descubre tu al rededor',
+            bodyClass: 'anadirRuta',
+            mostrarNav: true,
+            nombre: req.session.nombre,
+            ruta: result.rows[0],
+            id_ruta: result.rows[0].id_ruta
+        });
     } catch (error) {
         console.error(error);
         res.status(500).send('Error al abrir el formulario de editar la ruta: ' + error.message);
@@ -312,6 +323,7 @@ async function detalleRuta(req, res) {
             mostrarNav: true,
             nombre: req.session.nombre,
             ruta: ruta,
+            id_ruta: ruta.id_ruta,
             imagenes: imagenes,
             esCreador: esCreador,
             es_favorita: es_favorita,
@@ -403,6 +415,7 @@ module.exports = {
     anadirRuta,
     verRutas,
     verRutasIndex,
+    verFormularioEditar,
     modificarRuta,
     detalleRuta,
     misRutas,

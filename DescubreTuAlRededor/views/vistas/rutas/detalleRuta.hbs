@@ -5,8 +5,12 @@
             <h1 class="display-4">{{ruta.nombre_ruta}}</h1>
             {{#if esCreador}}
             <div class="mb-3">
-                <a href="/ruta/{{ruta.id_ruta}}/anadirImagenRuta" class="btn-owner" role="button">
+                <a href="/ruta/{{id_ruta}}/anadirImagenRuta" class="btn-owner" role="button">
                     <i class="bi bi-plus-circle-fill"></i> Añadir imágenes
+                </a>
+
+                <a href="/editarRuta/{{id_ruta}}" class="btn btn-primary">
+                    Editar ruta
                 </a>
             </div>
             {{/if}}
@@ -51,7 +55,7 @@
                 <div class="sidebar-card">
                     <h5><i class="bi bi-info-circle"></i>Datos de la ruta</h5>
 
-                    <span class="label bi bi-clock"> Tiempo->  </span>
+                    <span class="label bi bi-clock"> Tiempo-> </span>
                     <span class="value">{{ruta.duracion_estimacion}} min</span><br>
 
                     <span class="label bi bi-geo-alt"> Km-> </span>
@@ -137,7 +141,7 @@
                     {{/if}}
                 </div>
 
-                <a href="javascript:history.back()" class="btn btn-outline-secondary w-100 rounded-pill">
+                <a href="/verRutas" class="btn btn-outline-secondary w-100 rounded-pill">
                     <i class="bi bi-arrow-left me-2"></i>Volver
                 </a>
             </div>
@@ -222,16 +226,16 @@
 </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    const map = L.map('map-{{ruta.id_ruta}}', {
-        attributionControl: false,
-        doubleClickZoom: false
-    });
+    document.addEventListener("DOMContentLoaded", function () {
+        const map = L.map('map-{{ruta.id_ruta}}', {
+            attributionControl: false,
+            doubleClickZoom: false
+        });
 
-    L.tileLayer('https://{s}.tile.openstreetmap.de/{z}/{x}/{y}.png').addTo(map);
+        L.tileLayer('https://{s}.tile.openstreetmap.de/{z}/{x}/{y}.png').addTo(map);
 
-    //GeoJSON de la ruta
-    const geojson = {{{ruta.geom_json}}};
+        //GeoJSON de la ruta
+        const geojson = {{{ ruta.geom_json }}};
 
     const layer = L.geoJSON(geojson, {
         color: 'green',
@@ -242,7 +246,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const coords = geojson.coordinates;
 
     //inicio de la ruta
-        const inicio = coords[0];
+    const inicio = coords[0];
 
     L.marker([inicio[1], inicio[0]])
         .addTo(map)
@@ -252,7 +256,7 @@ document.addEventListener("DOMContentLoaded", function() {
     map.fitBounds(layer.getBounds());
 
     //fix visual
-        setTimeout(() => {
+    setTimeout(() => {
         map.invalidateSize();
     }, 100);
 });

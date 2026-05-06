@@ -1,7 +1,7 @@
 <div class="anadirRuta d-flex justify-content-center align-items-center">
     <div class="anadirRutaFormulario">
-        <h1>Añadir nueva ruta</h1>
-        <form action="/editarRuta/{{ruta.id_ruta}}" method="POST" enctype="multipart/form-data">
+        <h1>Editar ruta</h1>
+        <form action="/editarRuta/{{id_ruta}}" method="POST">
             <label for="nombre_ruta">Nombre de la ruta*</label>
             <input type="text" id="nombre_ruta" name="nombre_ruta" placeholder="Nombre de la ruta"
                 value="{{ruta.nombre_ruta}}" required>

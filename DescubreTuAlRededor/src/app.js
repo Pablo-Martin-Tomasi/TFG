@@ -34,6 +34,9 @@ const historialRoutes = require('./routes/historialRutas');
 //ruta para poder añadir un nuevo comentario
 const comentarioRoutes = require('./routes/comentario');
 
+//ruta para la vista GPS
+const gpsRoutes = require('./routes/rutasGPS');
+
 //ruta para la authenticiacion
 const authMiddleware = require('./middleware/auth');
 const { title } = require('process');
@@ -116,6 +119,7 @@ app.use('/', apuntarseRoutes);
 app.use('/', favRoutes);
 app.use('/', historialRoutes);
 app.use('/', comentarioRoutes);
+app.use('/', gpsRoutes);
 
 
 //ruta para el perfil del usuario
@@ -177,15 +181,6 @@ app.get('/anadirRuta', authMiddleware, (req, res) => {
     });
 });
 
-//formulario para editar la ruta
-app.get('/editarRuta', authMiddleware, (req, res) => {
-    res.render('vistas/rutas/editarRuta', {
-        title: 'Editar ruta | Descubre tu alrededor',
-        bodyClass: 'anadirRuta',
-        mostrarNav: true,
-        nombre: req.session.nombre
-    });
-});
 
 //formulario para poder cambiar la contraseña
 app.get('/modificarContrasenia', authMiddleware, (req, res) => {
