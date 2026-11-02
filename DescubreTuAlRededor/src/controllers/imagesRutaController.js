@@ -12,10 +12,10 @@ async function verFormularioAnadirImagen(req, res) {
 
         const ruta = resultado.rows[0];
 
-        // Verificar que el usuario en sesión es el que creó la ruta
+        //verificar que el usuario en sesión es el que creó la ruta
         if (ruta.email !== req.session.email) {
             return res.status(403).render('vistas/rutas/detalleRuta', {
-                title: ruta.nombre_ruta + " | Descubre tu al rededor",
+                title: ruta.nombre_ruta + " | Descubre tu alrededor",
                 bodyClass: 'verRutas',
                 mostrarNav: true,
                 nombre: req.session.nombre,
@@ -53,12 +53,12 @@ async function anadirImagenRuta(req, res) {
         }
 
         if (!req.files || req.files.length === 0) {
-            //Se necesita verificar que la ruta existe para poder añadir las imagenes a la ruta
+            //se necesita verificar que la ruta existe para poder añadir las imagenes a la ruta
             const resultado = await req.db.query('SELECT * FROM ruta WHERE id_ruta = $1', [id]);
             const ruta = resultado.rows[0];
 
             return res.render('vistas/rutas/anadirImagenRuta', {
-                title: 'Añadir imágenes a la ruta | Descubre tu al rededor',
+                title: 'Añadir imágenes a la ruta | Descubre tu alrededor',
                 ruta: ruta,
                 nombre: req.session.nombre,
                 mostrarNav: true,

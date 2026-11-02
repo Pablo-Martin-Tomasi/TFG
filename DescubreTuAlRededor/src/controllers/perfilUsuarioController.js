@@ -5,13 +5,11 @@ const path = require('path');
 
 const DEFAULT_AVATAR = '/uploads/AvatarDefault.jpg';
 
-//funcion para modificar los datos del usuario (nombre y descripcion)
 async function actualizar(req, res) {
     const { nombre, descripcion } = req.body;
     const email = req.session.email;
 
     try {
-        // Verificar si ya existe
         const existe = await req.db.query(
             'SELECT * FROM usuario WHERE email = $1',
             [email]
@@ -27,7 +25,6 @@ async function actualizar(req, res) {
             [nombre, descripcion, email]
         );
 
-        // actualizar sesión
         req.session.nombre = nombre;
         req.session.descripcion = descripcion;
 
@@ -38,7 +35,6 @@ async function actualizar(req, res) {
     }
 }
 
-//funcion para poder modificar la contraseña
 async function cambiarContrasenia(req, res) {
 
     const { contraseniaActual, contraseniaNueva, confirmarContrasenia } = req.body;
@@ -46,10 +42,10 @@ async function cambiarContrasenia(req, res) {
 
     try {
 
-        // comprobar que las nuevas contraseñas coinciden
+        //comprobar que las nuevas contraseñas coinciden
         if (contraseniaNueva !== confirmarContrasenia) {
             return res.render('vistas/usuario/modificarContrasenia', {
-                title: 'Modificar contraseña | Descubre tu al rededor',
+                title: 'Modificar contraseña | Descubre tu alrededor',
                 bodyClass: 'modificarContrasenia',
                 mostrarNav: true,
                 nombre: req.session.nombre,
@@ -58,7 +54,7 @@ async function cambiarContrasenia(req, res) {
             });
         }
 
-        // obtener contraseña actual del usuario
+        //obtener contraseña actual del usuario
         const resultado = await req.db.query(
             'SELECT contrasena FROM usuario WHERE email = $1',
             [email]
@@ -70,12 +66,12 @@ async function cambiarContrasenia(req, res) {
 
         const hashActual = resultado.rows[0].contrasena;
 
-        // comprobar contraseña actual
+        //comprobar contraseña actual
         const coincide = await bcrypt.compare(contraseniaActual, hashActual);
 
         if (!coincide) {
             return res.render('vistas/usuario/modificarContrasenia', {
-                title: 'Modificar contraseña | Descubre tu al rededor',
+                title: 'Modificar contraseña | Descubre tu alrededor',
                 bodyClass: 'modificarContrasenia',
                 mostrarNav: true,
                 nombre: req.session.nombre,
@@ -84,10 +80,10 @@ async function cambiarContrasenia(req, res) {
             });
         }
 
-        // generar hash de la nueva contraseña
+        //generar hash de la nueva contraseña
         const hashNueva = await bcrypt.hash(contraseniaNueva, 12);
 
-        // actualizar contraseña en la base de datos
+        //actualizar contraseña en la base de datos
         await req.db.query(
             'UPDATE usuario SET contrasena = $1 WHERE email = $2',
             [hashNueva, email]
@@ -102,7 +98,6 @@ async function cambiarContrasenia(req, res) {
     }
 }
 
-//cambiar la foto de perfil del usuario, ademas de eso
 async function cambiarFotoPerfil(req, res) {
     const email = req.session.email;
 

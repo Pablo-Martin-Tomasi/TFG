@@ -2,7 +2,7 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const rutasController = require('../controllers/rutasController');
-const authMiddleware = require('../middleware/auth');
+const { authMiddleware } = require('../middleware/auth');
 
 const router = express.Router();
 
@@ -22,11 +22,12 @@ const upload = multer({ storage });
 router.get('/', rutasController.verRutasIndex);
 router.get('/verRutas', rutasController.verRutas);
 router.post('/anadirRuta', authMiddleware, rutasController.anadirRuta);
-router.get('/detalleRuta/:id', authMiddleware, rutasController.detalleRuta);
+router.get('/detalleRuta/:id', rutasController.detalleRuta);
 router.get('/misRutas', authMiddleware, rutasController.misRutas);
 router.get('/miRuta/:id', authMiddleware, rutasController.miRuta);
 router.post('/editarRuta/:id', authMiddleware, rutasController.modificarRuta);
 router.get('/editarRuta/:id', authMiddleware, rutasController.verFormularioEditar);
+router.post('/misRutas/:id', authMiddleware, rutasController.eliminarRuta);
 
 
 module.exports = router;

@@ -4,13 +4,20 @@
         <div class="container">
             <h1 class="display-4">{{ruta.nombre_ruta}}</h1>
             {{#if esCreador}}
-            <div class="mb-3">
+            <div class="mb-3 d-flex gap-3 justify-content-center flex-wrap">
                 <a href="/ruta/{{id_ruta}}/anadirImagenRuta" class="btn-owner" role="button">
                     <i class="bi bi-plus-circle-fill"></i> Añadir imágenes
                 </a>
 
-                <a href="/editarRuta/{{id_ruta}}" class="btn btn-primary">
-                    Editar ruta
+                <a href="/editarRuta/{{id_ruta}}" class="btn-edit-route" role="button">
+                    <i class="bi bi-pencil-fill"></i> Editar ruta
+                </a>
+            </div>
+            {{/if}}
+            {{#if esAdmin}}
+            <div class="mb-3 d-flex gap-3 justify-content-center flex-wrap">
+                <a href="/editarRutaAdmin/{{id_ruta}}" class="btn-edit-route" role="button">
+                    <i class="bi bi-pencil-fill"></i> Editar ruta
                 </a>
             </div>
             {{/if}}
@@ -19,10 +26,8 @@
 
     <div class="container main-content-wrapper">
         <div class="row">
-            <!-- Columna Principal -->
             <div class="col-lg-8">
 
-                <!-- Mapa Principal -->
                 <div class="map-container mb-4">
                     <div class="card-img-container">
                         <div id="map-{{ruta.id_ruta}}" class="map-card"></div>
@@ -58,7 +63,10 @@
                     <span class="label bi bi-clock"> Tiempo-> </span>
                     <span class="value">{{ruta.duracion_estimacion}} min</span><br>
 
-                    <span class="label bi bi-geo-alt"> Km-> </span>
+                    <span class="label bi bi-geo-alt-fill"> Dirección-> </span>
+                    <span class="value">{{ruta.direccion}}</span><br>
+
+                    <span class="label bi bi-signpost"> Km-> </span>
                     <span class="value">{{ruta.km}}</span><br>
 
                     <span class="label bi bi-chevron-double-up"> Alt. Max-> </span>
@@ -86,7 +94,7 @@
                 <div class="sidebar-card">
                     <h5><i class="bi bi-map"></i> Ubicación</h5>
                     <p class="mb-3 text-mutedSmall">Consulta la ubicación exacta en Google Maps.</p>
-                    <a href="#" class="btn btn-outline-success w-100 rounded-pill">
+                    <a href="https://www.google.com/maps?q={{latitud}},{{longitud}}" class="btn btn-outline-success w-100 rounded-pill">
                         <i class="bi bi-google me-2"></i> Ver en Maps
                     </a>
                 </div>
@@ -103,42 +111,72 @@
                 </div>
 
                 <div class="sidebar-card action-card mb-4">
-                    <h5 class="mb-3 text-success fw-bold"><i class="bi bi-lightning-charge-fill me-2"></i>Acciones
-                    </h5>
-                    {{#if esCreador}}
-                    {{else}}
-                    {{#if es_hecha}}
-                    <div class="mb-2">
-                        <span class="text-success fw-bold">
-                            <i class="bi bi-check-circle-fill me-1"></i> ¡Ya has hecho esta ruta!
-                        </span>
+                    <h5 class="mb-3 text-success fw-bold"><i class="bi bi-lightning-charge-fill me-2"></i>Acciones</h5>
+
+                    <div class="d-flex flex-column gap-3">
+                        {{#unless esCreador}}
+                        {{#if es_hecha}}
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="btn-fav text-success shadow-none"
+                                style="cursor: default; background: rgba(40, 167, 69, 0.1);">
+                                <i class="bi bi-check-circle-fill"></i>
+                            </div>
+                            <div>
+                                <span class="text-success fw-bold d-block">Ruta completada</span>
+                                <small class="text-muted">Ya has registrado esta actividad</small>
+                            </div>
+                        </div>
+                        {{else}}
+                        <form action="/rutaHecha/{{ruta.id_ruta}}" method="POST"
+                            class="d-flex align-items-center gap-3 action-item">
+                            <button type="submit" class="btn-fav text-success" title="Marcar como hecha">
+                                <i class="bi bi-check-lg"></i>
+                            </button>
+                            <div class="action-text">
+                                <span class="fw-bold d-block">Marcar como hecha</span>
+                                <small class="text-muted">Añádela a tu historial</small>
+                            </div>
+                        </form>
+                        {{/if}}
+                        {{/unless}}
+
+                        {{#if es_favorita}}
+                        <form action="/rutaNoFav/{{ruta.id_ruta}}" method="POST"
+                            class="d-flex align-items-center gap-3 action-item">
+                            <button type="submit" class="btn-fav" title="Quitar de favoritas">
+                                <i class="bi bi-heart-fill text-danger"></i>
+                            </button>
+                            <div class="action-text">
+                                <span class="fw-bold d-block">Quitar de favoritas</span>
+                                <small class="text-muted">Eliminar de tu lista guardada</small>
+                            </div>
+                        </form>
+                        {{else}}
+                        <form action="/rutaFav/{{ruta.id_ruta}}" method="POST"
+                            class="d-flex align-items-center gap-3 action-item">
+                            <button type="submit" class="btn-fav" title="Añadir a favoritas">
+                                <i class="bi bi-suit-heart text-danger"></i>
+                            </button>
+                            <div class="action-text">
+                                <span class="fw-bold d-block">Añadir a favoritas</span>
+                                <small class="text-muted">Guárdala para verla después</small>
+                            </div>
+                        </form>
+                        {{/if}}
+
+                        {{#unless esCreador}}
+                        <form action="/reportarRuta/{{ruta.id_ruta}}" method="GET"
+                            class="d-flex align-items-center gap-3 action-item">
+                            <button type="submit" class="btn-fav" title="Reportar irregularidad">
+                                <i class="bi bi-flag-fill text-warning"></i>
+                            </button>
+                            <div class="action-text">
+                                <span class="fw-bold d-block">Reportar ruta</span>
+                                <small class="text-muted">Informa de algún problema</small>
+                            </div>
+                        </form>
+                        {{/unless}}
                     </div>
-                    {{else}}
-                    <form action="/rutaHecha/{{ruta.id_ruta}}" method="POST" style="display: inline-block;">
-                        <button type="submit" title="Marcar como hecha" class="btn-fav text-success">
-                            <i class="bi bi-check-lg"></i>
-                        </button>
-                    </form>
-                    {{/if}}
-                    {{/if}}
-
-                    <br><br>
-
-                    {{#if es_favorita}}
-                    <form action="/rutaNoFav/{{ruta.id_ruta}}" method="POST" class="fav-form"
-                        style="display: inline-block;">
-                        <button type="submit" class="btn-fav" title="Quitar de favoritas">
-                            <i class="bi bi-heart-fill text-danger"></i>
-                        </button>
-                    </form>
-                    {{else}}
-                    <form action="/rutaFav/{{ruta.id_ruta}}" method="POST" class="fav-form"
-                        style="display: inline-block;">
-                        <button type="submit" class="btn-fav" title="Añadir a favoritas">
-                            <i class="bi bi-suit-heart text-danger"></i>
-                        </button>
-                    </form>
-                    {{/if}}
                 </div>
 
                 <a href="/verRutas" class="btn btn-outline-secondary w-100 rounded-pill">
@@ -166,7 +204,7 @@
                                 <label class="form-label fw-bold">
                                     <i class="bi bi-image me-1"></i> Subir foto
                                 </label>
-                                <input type="file" class="form-control" name="url_imagen" accept="image/*">
+                                <input type="file" class="form-control" name="imagen" id="imagen" accept="image/*">
                             </div>
 
                             <div class="text-end">
@@ -183,11 +221,16 @@
                         <div class="comment-item py-4 {{#unless @last}}border-bottom{{/unless}}">
                             <div class="d-flex align-items-start">
                                 <div class="comment-avatar-circle me-3 d-flex align-items-center justify-content-center bg-light rounded-circle"
-                                    style="min-width: 48px; height: 48px; color: #4a7c44; font-weight: 700; border: 1px solid #dee2e6; font-size: 1.1rem;">
+                                    style="min-width: 48px; height: 48px; color: #4a7c44; font-weight: 700; border: 1px solid #dee2e6; font-size: 1.1rem; overflow: hidden;">
+                                    {{#if foto_perfil}}
+                                    <img src="{{foto_perfil}}" alt="Avatar"
+                                        style="width: 100%; height: 100%; object-fit: cover;">
+                                    {{else}}
                                     {{#if nombre}}
                                     {{substring nombre 0 1}}
                                     {{else}}
                                     U
+                                    {{/if}}
                                     {{/if}}
                                 </div>
                                 <div class="flex-grow-1">

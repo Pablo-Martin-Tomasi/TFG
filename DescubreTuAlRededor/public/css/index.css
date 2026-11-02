@@ -2,7 +2,7 @@
 .vistaIndex {
     margin: 0;
     font-family: Arial, sans-serif;
-    background-color: #FFFAF1;
+    background-color: #FFFAF1 !important;
     display: flex;
     flex-direction: column;
     min-height: 100vh;

@@ -1,10 +1,9 @@
 <div class="container py-5">
     <div class="d-flex justify-content-start">
-        <a href="javascript:history.back()" class="btn-volver-perfil">
+        <a href="/perfilUsuario" class="btn-volver-perfil">
             <i class="bi bi-arrow-left-circle-fill"></i> Volver
         </a>
     </div>
-    <!-- Encabezado de la página -->
     <div class="text-center mb-5">
         <h1 class="display-4 fw-bold" style="color: #1a401f; font-family: 'Outfit', sans-serif;">Rutas agregadas</h1>
         <div class="mx-auto mb-3"
@@ -31,7 +30,12 @@
 
                 <div class="card-sub-info">
                     <p class="card-text">{{descripcion_corta}}</p>
-                    <span class="km-info">{{km}} km</span>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="km-info">{{km}} km</span>
+                        <span class="address-info">
+                            <i class="bi bi-geo-alt-fill text-success"></i> {{direccion}}
+                        </span>
+                    </div>
                 </div>
             </div>
 
@@ -43,12 +47,18 @@
                     </button>
                 </form>
                 {{else}}
-                <form action="/rutaFav/{{id_ruta}}" method="POST" cla   ss="fav-form">
+                <form action="/rutaFav/{{id_ruta}}" method="POST" class="fav-form">
                     <button type="submit" class="btn-fav">
                         <i class="bi bi-suit-heart"></i>
                     </button>
                 </form>
                 {{/if}}
+
+                <form action="/misRutas/{{id_ruta}}" method="POST" onsubmit="return confirm('¿Estás seguro de que quieres eliminar esta ruta? Esta acción no se puede deshacer.')">
+                    <button type="submit" class="btn-delete">
+                        <i class="bi bi-trash-fill"></i>
+                    </button>
+                </form>
 
                 <a href="/detalleRuta/{{id_ruta}}" class="btn-detail">
                     Detalle
@@ -58,7 +68,6 @@
         {{/each}}
     </div>
     {{else}}
-    <!-- Estado vacío -->
     <div class="text-center py-5 mt-4">
         <div class="mb-4">
             <div class="d-inline-flex align-items-center justify-content-center bg-light rounded-circle"
@@ -79,41 +88,41 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        {{#each rutasUsuario}}
-        (function() {
-            const map = L.map('map-{{id_ruta}}', {
-                attributionControl: false,
-                doubleClickZoom: false
-            });
+    {{#each rutasUsuario}}
+    (function () {
+        const map = L.map('map-{{id_ruta}}', {
+            attributionControl: false,
+            doubleClickZoom: false
+        });
 
-            L.tileLayer('https://{s}.tile.openstreetmap.de/{z}/{x}/{y}.png').addTo(map);
+        L.tileLayer('https://{s}.tile.openstreetmap.de/{z}/{x}/{y}.png').addTo(map);
 
-            //convertir las coords a GeoJSON
-            const geojson = {{{geom_json}}};
+        //convertir las coords a GeoJSON
+        const geojson = {{{ geom_json }}};
 
-            const layer = L.geoJSON(geojson, {
-                color: 'green',
-                weight: 4
-            }).addTo(map);
+        const layer = L.geoJSON(geojson, {
+            color: 'green',
+            weight: 4
+        }).addTo(map);
 
-            const coords = geojson.coordinates;
+        const coords = geojson.coordinates;
 
-            //punto de inicio de la ruta
-            const inicio = coords[0];
+        //punto de inicio de la ruta
+        const inicio = coords[0];
 
-            L.marker([inicio[1], inicio[0]])
+        L.marker([inicio[1], inicio[0]])
             .addTo(map)
             .bindPopup("Inicio de la ruta");
 
-            //ajustar el zoom
-            map.fitBounds(layer.getBounds());
+        //ajustar el zoom
+        map.fitBounds(layer.getBounds());
 
-            //poder ver el mapa bien
-            setTimeout(() => {
-                map.invalidateSize();
-            }, 100);
-        })();
-        {{/each}}
+        //poder ver el mapa bien
+        setTimeout(() => {
+            map.invalidateSize();
+        }, 100);
+    })();
+    {{/each}}
 
     });
 </script>

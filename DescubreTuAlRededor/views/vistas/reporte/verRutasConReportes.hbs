@@ -1,0 +1,86 @@
+    {{#if routesReporte.length}}
+        <div class="contenedor">
+            {{#each routesReporte}}
+            <div class="card custom-card">
+                <div class="card-img-container">
+                    <div id="map-{{id_ruta}}" class="map-card"></div>
+                </div>
+
+                <div class="card-body">
+                    <div class="card-main-info">
+                        <h5 class="card-title">{{nombre_ruta}}</h5>
+                        <span class="badge-difficulty {{dificultad_ruta}}">
+                            {{dificultad_ruta}}
+                        </span>
+                    </div>
+
+                    <div class="card-sub-info">
+                        <p class="card-text">{{descripcion_corta}}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="km-info">{{km}} km</span>
+                            <span class="address-info">
+                                <i class="bi bi-geo-alt-fill text-success"></i> {{direccion}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer custom-footer">
+                    <a href="/detalleReporte/{{id_ruta}}" class="btn-detail">
+                        Ver los reportes
+                    </a>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    {{else}}
+        <div class="text-center py-5 mt-4">
+            <div class="mb-4">
+                <div class="d-inline-flex align-items-center justify-content-center bg-light rounded-circle"
+                    style="width: 120px; height: 120px;">
+                    <i class="bi bi-exclamation-triangle" style="font-size: 3.5rem; color: #ced4da;"></i>
+                </div>
+            </div>
+            <h3 class="fw-bold text-dark mb-3">No hay ninguna ruta con reportes</h3>
+            <p class="text-muted mb-4 mx-auto" style="max-width: 400px;">
+                ¡Buenas noticias! Actualmente no hay ninguna ruta que haya sido reportada por los usuarios.
+            </p>
+        </div>
+    {{/if}}
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        {{#each routesReporte}}
+        (function() {
+            const map = L.map('map-{{id_ruta}}', {
+                attributionControl: false,
+                doubleClickZoom: false
+            });
+
+            L.tileLayer('https://{s}.tile.openstreetmap.de/{z}/{x}/{y}.png').addTo(map);
+
+            const geojson = {{{geom_json}}};
+
+            const layer = L.geoJSON(geojson, {
+                color: 'green',
+                weight: 4
+            }).addTo(map);
+
+            const coords = geojson.coordinates;
+
+            const inicio = coords[0];
+
+            L.marker([inicio[1], inicio[0]])
+            .addTo(map)
+            .bindPopup("Inicio de la ruta");
+
+            map.fitBounds(layer.getBounds());
+
+            setTimeout(() => {
+                map.invalidateSize();
+            }, 100);
+        })();
+        {{/each}}
+
+    });
+</script>

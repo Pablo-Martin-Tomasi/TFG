@@ -6,7 +6,7 @@ function login(req, res) {
     }
 
     res.render('vistas/usuario/inicioSesion', {
-        title: 'Inicio sesión | Descubre tu al rededor',
+        title: 'Inicio sesión | Descubre tualrededor',
         bodyClass: 'loginRegistro',
         mostrarNav: false
     });
@@ -24,7 +24,7 @@ async function aut(req, res) {
 
         if (result.rows.length === 0) {
             return res.render('vistas/usuario/inicioSesion', {
-                title: 'Inicio sesión | Descubre tu al rededor',
+                title: 'Inicio sesión | Descubre tu alrededor',
                 bodyClass: 'loginRegistro',
                 mostrarNav: false,
                 error: 'No existe un usuario con ese email'
@@ -34,7 +34,7 @@ async function aut(req, res) {
         const usuario = result.rows[0];
 
 
-        // Comparar contraseña
+        //comparar las contraseñas para poder iniciar la sesión correctamente
         const passwordCorrecta = await bcrypt.compare(
             contrasena,
             usuario.contrasena
@@ -42,14 +42,13 @@ async function aut(req, res) {
 
         if (!passwordCorrecta) {
             return res.render('vistas/usuario/inicioSesion', {
-                title: 'Inicio sesión | Descubre tu al rededor',
+                title: 'Inicio sesión | Descubre tu alrededor',
                 bodyClass: 'loginRegistro',
                 mostrarNav: false,
                 error: 'Contraseña incorrecta'
             });
         }
 
-        // Crear sesión
         req.session.loggendin = true;
         req.session.email = usuario.email;
         req.session.contrasena = usuario.contrasena;
@@ -72,7 +71,7 @@ function register(req, res) {
     }
 
     res.render('vistas/usuario/registro', {
-        title: 'Registro | Descubre tu al rededor',
+        title: 'Registro | Descubre tu alrededor',
         bodyClass: 'loginRegistro',
         mostrarNav: false
     });
@@ -82,7 +81,6 @@ async function storeUser(req, res) {
     const { email, nombre, contrasena } = req.body;
 
     try {
-        // Verificar si ya existe
         const existe = await req.db.query(
             'SELECT * FROM usuario WHERE email = $1',
             [email]
@@ -90,14 +88,13 @@ async function storeUser(req, res) {
 
         if (existe.rows.length > 0) {
             return res.render('vistas/usuario/registro', {
-                title: 'Registro | Descubre tu al rededor',
+                title: 'Registro | Descubre tu alrededor',
                 bodyClass: 'loginRegistro',
                 mostrarNav: false,
                 error: 'Ya existe un usuario con ese email'
             });
         }
 
-        // Encriptar contraseña
         const hash = await bcrypt.hash(contrasena, 12);
 
         //poner una foto de perfil automatica a un nuevo usuario
@@ -109,7 +106,6 @@ async function storeUser(req, res) {
             [email, nombre, hash, 'Usuario', 'Hola soy un/a nuev@ usuario', defaultAvatar]
         );
 
-        // Opcional: iniciar sesión automáticamente tras registrarse
         req.session.loggendin = true;
         req.session.email = email;
         req.session.nombre = nombre;

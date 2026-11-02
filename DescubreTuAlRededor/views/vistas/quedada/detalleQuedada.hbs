@@ -13,10 +13,7 @@
     <div class="container mt-5">
         <div class="row g-4">
 
-            <!-- Columna Principal -->
             <div class="col-lg-8">
-
-                <!-- Descripción -->
                 <div class="main-content-card">
                     <h3 class="section-title">
                         <i class="bi bi-chat-text-fill"></i> Descripción
@@ -24,7 +21,6 @@
                     <p class="description-text">{{quedada.descripcion}}</p>
                 </div>
 
-                <!-- Punto de encuentro -->
                 <div class="main-content-card">
                     <h3 class="section-title">
                         <i class="bi bi-geo-alt-fill"></i> Punto de Encuentro
@@ -34,7 +30,6 @@
                     </p>
                 </div>
 
-                <!-- Mapa de la ruta -->
                 <div class="main-content-card p-0">
                     <div class="p-4 pb-0">
                         <h3 class="section-title">
@@ -50,10 +45,8 @@
 
             </div>
 
-            <!-- Sidebar -->
             <div class="col-lg-4">
 
-                <!-- Datos clave -->
                 <div class="sidebar-card">
                     <h5><i class="bi bi-info-circle-fill"></i> Información</h5>
 
@@ -90,7 +83,6 @@
                     </div>
                 </div>
 
-                <!-- Ruta vinculada -->
                 <div class="sidebar-card">
                     <h5><i class="bi bi-signpost-split-fill"></i> Ruta</h5>
                     <div class="sidebar-info-item">
@@ -105,12 +97,10 @@
                     </a>
                 </div>
 
-                {{!-- Solo mostrar si el usuario NO es el creador de la quedada --}}
                 {{#unless (eq emailUsuario quedada.email_creador)}}
                 <div class="sidebar-card action-card mb-4">
 
                     {{#if esApuntado}}
-                    {{!-- Usuario ya apuntado: mostrar opción de desapuntarse --}}
                     <h5 class="mb-3 fw-bold" style="color: var(--primary);">
                         <i class="bi bi-check-circle-fill me-2"></i>¡Ya estás apuntado!
                     </h5>
@@ -124,7 +114,6 @@
                         </button>
                     </form>
                     {{else}}
-                    {{!-- Usuario no apuntado: mostrar opción de apuntarse --}}
                     <h5 class="mb-3 text-success fw-bold">
                         <i class="bi bi-lightning-charge-fill me-2"></i>¿Te animas?
                     </h5>
@@ -142,8 +131,7 @@
                 {{/unless}}
 
 
-                <!-- Volver -->
-                <a href="javascript:history.back()" class="btn btn-outline-secondary w-100 rounded-pill">
+                <a href="/verQuedadas" class="btn btn-outline-secondary w-100 rounded-pill">
                     <i class="bi bi-arrow-left me-2"></i>Volver a Quedadas
                 </a>
 
@@ -161,7 +149,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
     L.tileLayer('https://{s}.tile.openstreetmap.de/{z}/{x}/{y}.png').addTo(map);
 
-    //GeoJSON de la ruta
     const geojson = {{{quedada.geom_json}}};
 
     const layer = L.geoJSON(geojson, {
@@ -169,21 +156,17 @@ document.addEventListener("DOMContentLoaded", function() {
         weight: 4
     }).addTo(map);
 
-    //coordenadas
     const coords = geojson.coordinates;
 
-    //inicio de la ruta
-        const inicio = coords[0];
+    const inicio = coords[0];
 
     L.marker([inicio[1], inicio[0]])
         .addTo(map)
         .bindPopup("Inicio de la ruta");
 
-    //ajustar la vista
     map.fitBounds(layer.getBounds());
 
-    //fix visual
-        setTimeout(() => {
+    setTimeout(() => {
         map.invalidateSize();
     }, 100);
 });

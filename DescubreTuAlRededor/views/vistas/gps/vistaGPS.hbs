@@ -3,13 +3,29 @@
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
-    const map = L.map('map').setView([40.4168, -3.7038], 14);
+    const map = L.map('map');
 
+    // Cargar tiles
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap'
     }).addTo(map);
 
     const bounds = [];
+
+    navigator.geolocation.getCurrentPosition(
+        (position) => {
+
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+
+            map.setView([lat, lng], 13);
+        },
+        (error) => {
+            console.log("Error obteniendo ubicación:", error);
+
+            map.setView([40.4168, -3.7038], 13);
+        }
+    );
 
     {{#each routes}}
     (function () {
@@ -20,7 +36,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const inicio = coords[0];
 
-        // 🔥 ICONO POR DEFECTO LEAFLET
         const marker = L.marker([inicio[1], inicio[0]])
             .addTo(map)
             .bindPopup(`
@@ -34,5 +49,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     })();
     {{/each}}
+
 });
 </script>

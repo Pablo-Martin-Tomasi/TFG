@@ -1,9 +1,9 @@
-
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
 -- ENUMS
 CREATE TYPE rol_usuario AS ENUM ('Usuario', 'Admin');
 CREATE TYPE dificultad_ruta AS ENUM ('Fácil', 'Normal', 'Difícil');
+CREATE TYPE tipo_ruta AS ENUM ('circular','ida_vuelta');
 
 -- USUARIO
 CREATE TABLE usuario(
@@ -22,7 +22,6 @@ CREATE TABLE ruta(
     dificultad_ruta dificultad_ruta not null,
     km numeric(6,2) not null,
     direccion text NOT NULL,
-	mapa_ruta varchar(255) not null,
     descripcion text not null,
     desnivel_pos int not null,
     desnivel_neg int not null,
@@ -130,24 +129,17 @@ CREATE TABLE participantes_quedada(
         ON DELETE CASCADE
 );
 
--- SEGUIDORES
-CREATE TABLE seguidores(
-    email_seguidor varchar(100) NOT NULL,
-    email_seguido varchar(100) NOT NULL,
-    fecha_seguimiento timestamp DEFAULT current_timestamp,
+ALTER TABLE ruta ADD COLUMN duracion_estimacion int;
+ALTER TABLE ruta ADD COLUMN tipo_ruta tipo_ruta;
 
-    PRIMARY KEY (email_seguidor, email_seguido),
+--reportar rutas
+create table reporte(
+	id_reporte serial PRIMARY KEY,
+	email varchar(100) NOT NULL,
+	id_ruta int NOT NULL,
+	texto_reporte text,
 
-    CHECK (email_seguidor <> email_seguido),
-
-    FOREIGN KEY (email_seguidor)
-        REFERENCES usuario(email)
-        ON DELETE CASCADE,
-
-    FOREIGN KEY (email_Seguido)
-        REFERENCES usuario(email)
-        ON DELETE CASCADE
+	
 );
 
-
-ALTER TABLE ruta ADD COLUMN duracion_estimacion int;
+ALTER TABLE reporte ADD COLUMN fecha timestamp DEFAULT current_timestamp;

@@ -41,9 +41,6 @@ async function anadirComentario(req, res) {
     }
 }
 
-
-
-
 module.exports = {
     anadirComentario
 }

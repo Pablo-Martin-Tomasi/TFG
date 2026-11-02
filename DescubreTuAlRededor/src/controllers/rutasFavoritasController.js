@@ -37,7 +37,7 @@ async function rutasFav(req, res) {
         }
 
         const result = await req.db.query(
-            `SELECT r.id_ruta, r.nombre_ruta, r.dificultad_ruta, r.km, r.descripcion, ST_AsGeoJSON(geom) as geom_json
+            `SELECT r.id_ruta, r.nombre_ruta, r.dificultad_ruta, r.km, r.descripcion, r.direccion, ST_AsGeoJSON(geom) as geom_json
              FROM rutas_por_hacer rph
              JOIN ruta r ON rph.id_ruta = r.id_ruta
              WHERE rph.email = $1`,
@@ -48,7 +48,6 @@ async function rutasFav(req, res) {
 
         rutasFavUsuario.forEach(route => {
             route.es_favorita = true;
-            // Generar descripción corta si no existe
             if (route.descripcion) {
                 route.descripcion_corta = route.descripcion.length > 50
                     ? route.descripcion.substring(0, 50) + '...'
@@ -59,7 +58,7 @@ async function rutasFav(req, res) {
         });
 
         res.render('vistas/rutas/rutasFav', {
-            title: 'Rutas favoritas | Descubre tu al rededor',
+            title: 'Rutas favoritas | Descubre tu alrededor',
             bodyClass: 'verRutasPorHacer',
             mostrarNav: true,
             nombre: req.session.nombre,

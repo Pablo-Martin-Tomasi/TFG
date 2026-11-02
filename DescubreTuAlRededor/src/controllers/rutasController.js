@@ -27,7 +27,6 @@ async function anadirRuta(req, res) {
             return res.send("Ruta inválida");
         }
 
-        //hacer el linestring
         const lineString = coords
             .map(p => `${p[1]} ${p[0]}`)
             .join(',');
@@ -41,7 +40,7 @@ async function anadirRuta(req, res) {
 
         if (existe.rows.length > 0) {
             return res.render('vistas/rutas/anadirRuta', {
-                title: 'Descubre tu al rededor | Añadir nueva ruta',
+                title: 'Añadir nueva ruta | Descubre tualrededor',
                 bodyClass: 'anadirRuta',
                 mostrarNav: true,
                 nombre: req.session.nombre,
@@ -51,7 +50,7 @@ async function anadirRuta(req, res) {
 
         if (altura_min > altura_max) {
             return res.render('vistas/rutas/anadirRuta', {
-                title: 'Añadir nueva ruta | Descubre tu al rededor',
+                title: 'Añadir nueva ruta | Descubre tualrededor',
                 bodyClass: 'anadirRuta',
                 mostrarNav: true,
                 nombre: req.session.nombre,
@@ -61,7 +60,7 @@ async function anadirRuta(req, res) {
 
         if (desnivel_pos < 0 || desnivel_neg < 0) {
             return res.render('vistas/rutas/anadirRuta', {
-                title: 'Añadir nueva ruta | Descubre tu al rededor',
+                title: 'Añadir nueva ruta | Descubre tualrededor',
                 bodyClass: 'anadirRuta',
                 mostrarNav: true,
                 nombre: req.session.nombre,
@@ -101,8 +100,11 @@ async function anadirRuta(req, res) {
 
 async function verRutas(req, res) {
     try {
-        const result = await req.db.query('SELECT id_ruta, nombre_ruta, dificultad_ruta, km, descripcion, ST_AsGeoJSON(geom) as geom_json FROM ruta');
+        const result = await req.db.query('SELECT id_ruta, nombre_ruta, dificultad_ruta, km, descripcion, direccion, tipo_ruta, ST_AsGeoJSON(geom) as geom_json FROM ruta');
         const routes = result.rows;
+
+        const resultDirecciones = await req.db.query('SELECT DISTINCT direccion FROM ruta WHERE direccion IS NOT NULL AND direccion != \'\' ORDER BY direccion');
+        const direcciones = resultDirecciones.rows.map(row => row.direccion);
 
         const email = req.session.email;
         let rutasFavIds = [];
@@ -113,7 +115,6 @@ async function verRutas(req, res) {
 
         routes.forEach(route => {
             route.es_favorita = rutasFavIds.includes(route.id_ruta);
-            // Generar descripción corta si no existe
             if (route.descripcion) {
                 route.descripcion_corta = route.descripcion.length > 50
                     ? route.descripcion.substring(0, 50) + '...'
@@ -128,7 +129,8 @@ async function verRutas(req, res) {
             bodyClass: 'verRutas',
             mostrarNav: true,
             nombre: req.session.nombre,
-            routes: routes
+            routes: routes,
+            direcciones: direcciones
         });
     } catch (error) {
         console.error(error);
@@ -138,7 +140,7 @@ async function verRutas(req, res) {
 
 async function verRutasIndex(req, res) {
     try {
-        const result = await req.db.query('SELECT id_ruta, nombre_ruta, dificultad_ruta, km, descripcion, ST_AsGeoJSON(geom) as geom_json FROM ruta ORDER BY RANDOM() LIMIT 12;');
+        const result = await req.db.query('SELECT id_ruta, nombre_ruta, dificultad_ruta, km, descripcion, direccion, ST_AsGeoJSON(geom) as geom_json FROM ruta ORDER BY RANDOM() LIMIT 6');
         const routes = result.rows;
 
         const email = req.session.email;
@@ -150,7 +152,6 @@ async function verRutasIndex(req, res) {
 
         routes.forEach(route => {
             route.es_favorita = rutasFavIds.includes(route.id_ruta);
-            // Generar descripción corta
             if (route.descripcion) {
                 route.descripcion_corta = route.descripcion.length > 50
                     ? route.descripcion.substring(0, 50) + '...'
@@ -161,7 +162,7 @@ async function verRutasIndex(req, res) {
         });
 
         res.render('index', {
-            title: 'Descubre tu al rededor',
+            title: 'Descubre tu alrededor',
             bodyClass: 'verRutas',
             mostrarNav: true,
             nombre: req.session.nombre,
@@ -188,7 +189,7 @@ async function verFormularioEditar(req, res) {
         }
 
         res.render('vistas/rutas/editarRuta', {
-            title: 'Editar ruta | Descubre tu al rededor',
+            title: 'Editar ruta | Descubre tualrededor',
             bodyClass: 'anadirRuta',
             mostrarNav: true,
             nombre: req.session.nombre,
@@ -237,7 +238,6 @@ async function modificarRuta(req, res) {
             email
         ]);
 
-        // 🔥 clave: comprobar si realmente se ha actualizado algo
         if (result.rowCount === 0) {
             return res.status(403).send("No tienes permisos para modificar esta ruta");
         }
@@ -258,7 +258,6 @@ async function detalleRuta(req, res) {
             return res.send("ID inválido");
         }
 
-        // Obtener datos de la ruta
         const resultadoRuta = await req.db.query(`
             SELECT r.*, u.nombre, ST_AsGeoJSON(geom) as geom_json
             FROM ruta r
@@ -274,7 +273,10 @@ async function detalleRuta(req, res) {
 
         const ruta = resultadoRuta.rows[0];
 
-        // Obtener imágenes adicionales de la ruta
+        const geom = JSON.parse(ruta.geom_json);
+        const latitud = geom.coordinates[0][1];
+        const longitud = geom.coordinates[0][0];
+
         const resultadoImagenes = await req.db.query(
             'SELECT * FROM imagenes_ruta WHERE id_ruta = $1',
             [id]
@@ -282,9 +284,8 @@ async function detalleRuta(req, res) {
 
         const imagenes = resultadoImagenes.rows;
 
-        //enseñar al usuario los comentarios de la ruta
         const comentariosRuta = await req.db.query(
-            `SELECT c.*, u.nombre
+            `SELECT c.*, u.nombre, u.foto_perfil
             FROM comentario_ruta c
             JOIN historial_rutas h ON c.id_historial = h.id_historial
             JOIN usuario u ON h.email = u.email
@@ -294,7 +295,6 @@ async function detalleRuta(req, res) {
 
         const comentarios = comentariosRuta.rows;
 
-        // Verificar si el usuario actual es el creador de la ruta
         const esCreador = req.session.email === ruta.email;
 
         let es_favorita = false;
@@ -302,7 +302,6 @@ async function detalleRuta(req, res) {
 
         const email = req.session.email;
         if (email) {
-            // Verificar si es favorita
             const resultFav = await req.db.query(
                 'SELECT 1 FROM rutas_por_hacer WHERE email = $1 AND id_ruta = $2',
                 [email, id]
@@ -318,7 +317,7 @@ async function detalleRuta(req, res) {
         }
 
         res.render('vistas/rutas/detalleRuta', {
-            title: ruta.nombre_ruta + " | Descubre tu al rededor",
+            title: ruta.nombre_ruta + " | Descubre tu alrededor",
             bodyClass: 'verRutas',
             mostrarNav: true,
             nombre: req.session.nombre,
@@ -328,7 +327,9 @@ async function detalleRuta(req, res) {
             esCreador: esCreador,
             es_favorita: es_favorita,
             es_hecha: es_hecha,
-            comentarios: comentarios
+            comentarios: comentarios,
+            latitud: latitud,
+            longitud: longitud
         });
     }
     catch (error) {
@@ -342,13 +343,12 @@ async function misRutas(req, res) {
         const email = req.session.email;
 
         const resultado = await req.db.query(
-            'SELECT id_ruta, nombre_ruta, dificultad_ruta, km, descripcion, ST_AsGeoJSON(geom) as geom_json from ruta where email = $1',
+            'SELECT id_ruta, nombre_ruta, dificultad_ruta, km, descripcion, direccion, ST_AsGeoJSON(geom) as geom_json from ruta where email = $1',
             [email]
         );
 
         const rutasUsuario = resultado.rows;
 
-        // Obtener ids de rutas favoritas del usuario
         let rutasFavIds = [];
         if (email) {
             const resultFav = await req.db.query('SELECT id_ruta FROM rutas_por_hacer WHERE email = $1', [email]);
@@ -356,9 +356,7 @@ async function misRutas(req, res) {
         }
 
         rutasUsuario.forEach(route => {
-            // Verificar si es favorita
             route.es_favorita = rutasFavIds.includes(route.id_ruta);
-            // Generar descripción corta
             if (route.descripcion) {
                 route.descripcion_corta = route.descripcion.length > 50
                     ? route.descripcion.substring(0, 50) + '...'
@@ -369,7 +367,7 @@ async function misRutas(req, res) {
         });
 
         res.render('vistas/rutas/misRutas', {
-            title: 'Mis rutas | Descubre tu al rededor',
+            title: 'Mis rutas | Descubre tu alrededor',
             bodyClass: 'misRutas',
             mostrarNav: true,
             nombre: req.session.nombre,
@@ -398,7 +396,7 @@ async function miRuta(req, res) {
         const ruta = resultado.rows[0];
 
         res.render('vistas/rutas/miRuta', {
-            title: ruta.nombre_ruta + " | Descubre tu al rededor",
+            title: ruta.nombre_ruta + " | Descubre tu alrededor",
             bodyClass: 'verRutas',
             mostrarNav: true,
             nombre: req.session.nombre,
@@ -411,6 +409,33 @@ async function miRuta(req, res) {
     }
 }
 
+async function eliminarRuta(req, res) {
+    const { id } = req.params;
+    const email = req.session.email;
+
+    try {
+        const checkRuta = await req.db.query(
+            'SELECT * FROM ruta WHERE id_ruta = $1 AND email = $2',
+            [id, email]
+        );
+
+        if (checkRuta.rows.length === 0) {
+            return res.status(403).send("No tienes permiso para eliminar esta ruta o la ruta no existe");
+        }
+
+        await req.db.query(
+            'DELETE FROM ruta WHERE id_ruta = $1 AND email = $2',
+            [id, email]
+        );
+
+        res.redirect('/misRutas');
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error al eliminar la ruta: ' + error.message);
+    }
+}
+
 module.exports = {
     anadirRuta,
     verRutas,
@@ -419,5 +444,6 @@ module.exports = {
     modificarRuta,
     detalleRuta,
     misRutas,
-    miRuta
+    miRuta,
+    eliminarRuta
 };

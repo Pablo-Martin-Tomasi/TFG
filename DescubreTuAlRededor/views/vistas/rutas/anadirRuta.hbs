@@ -1,7 +1,7 @@
 <div class="anadirRuta d-flex justify-content-center align-items-center">
     <div class="anadirRutaFormulario">
         <h1>Añadir nueva ruta</h1>
-        <form action="/anadirRuta" method="POST" enctype="multipart/form-data">
+        <form action="/anadirRuta" method="POST">
             <label for="nombre_ruta">Nombre de la ruta*</label>
             <input type="text" id="nombre_ruta" name="nombre_ruta" placeholder="Nombre de la ruta" required>
 
@@ -70,27 +70,41 @@
 
 <script>
     window.onload = function () {
-        // Inicializamos el mapa centrado en coordenadas generales (ej: Madrid) y con zoom 12 
-        // lo ideal sera hacer que pille tu localizacion pero eso sera seguramente lo ultimo no olvidarte de eso
-        const map = L.map('map').setView([40.4168, -3.7038], 15);
+        const map = L.map('map');
 
-        // 2. Añadimos la capa de los "azulejos" (tiles) de OpenStreetMap
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap'
+        }).addTo(map);
 
-        // 3. Variable para guardar poder marcar varios puntos que van a hacer la ruta
-        let puntosMapa = []; // un array
+        const bounds = [];
+
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+
+                const lat = position.coords.latitude;
+                const lng = position.coords.longitude;
+
+                map.setView([lat, lng], 13);
+            },
+            (error) => {
+                console.log("Error obteniendo ubicación:", error);
+
+                map.setView([40.4168, -3.7038], 13);
+            }
+        );
+
+        let puntosMapa = [];
         let linea = null;
         let puntoInicial = null;
-        let direccionAsignada = false; // para no repetir llamadas a la API
+        let direccionAsignada = false;
 
         map.on('click', function (e) {
             const lat = e.latlng.lat;
             const lng = e.latlng.lng;
 
-            // guardar el punto
             puntosMapa.push([lat, lng]);
 
-            console.log(puntosMapa); // para que veas cómo crece
+            console.log(puntosMapa);
 
             if (puntosMapa.length === 1) {
                 puntoInicial = L.marker([lat, lng])
@@ -98,19 +112,16 @@
                     .bindPopup("Punto de inicio de la ruta")
                     .openPopup();
 
-                // solo cogemos la dirección del PRIMER punto
                 if (!direccionAsignada) {
                     obtenerDireccion(lat, lng);
                     direccionAsignada = true;
                 }
             }
 
-            // borrar la linea anterior
             if (linea !== null) {
                 map.removeLayer(linea);
             }
 
-            // dibujar la linea del mapa
             linea = L.polyline(puntosMapa, {
                 color: 'blue'
             }).addTo(map);
@@ -118,7 +129,6 @@
             distanciaKm();
         });
 
-        // funcion para poder mostrar los km que hacen la ruta
         function distanciaKm() {
             let distanciaTotal = 0;
 
@@ -132,16 +142,14 @@
             document.getElementById('km').value = (distanciaTotal / 1000).toFixed(2);
         }
 
-        // function para obtener la direccion automaticamente (solo ciudad + pais)
         function obtenerDireccion(lat, lng) {
-            fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`)
+            fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&accept-language=es`)
                 .then(res => res.json())
                 .then(data => {
                     console.log(data);
 
                     const addr = data.address;
 
-                    // coger solo ciudad/pueblo
                     const ciudad = addr.city || addr.town || addr.village || addr.hamlet || "Desconocido";
                     const pais = addr.country || "";
 
@@ -152,7 +160,6 @@
                 .catch(err => console.error("Error obteniendo dirección:", err));
         }
 
-        // antes de enviar el formulario guardamos las coordenadas
         document.querySelector("form").addEventListener("submit", function () {
             document.getElementById("coordenadas").value = JSON.stringify(puntosMapa);
         });

@@ -56,8 +56,8 @@ async function verQuedadas(req, res) {
         const quedadas = result.rows;
 
         res.render('vistas/quedada/verQuedadas', {
-            title: 'Ver quedadas | Descubre tu al rededor',
-            bodyClass: 'verRutas',//se va a usar la misma body class para el estilo para evitar repeticion
+            title: 'Ver quedadas | Descubre tu alrededor',
+            bodyClass: 'verRutas',
             mostrarNav: true,
             nombre: req.session.nombre,
             quedadas: quedadas
@@ -70,13 +70,12 @@ async function verQuedadas(req, res) {
 
 async function detalleQuedada(req, res) {
     try {
-        const id = parseInt(req.params.id);//sacar el id de la quedada
+        const id = parseInt(req.params.id);
 
         if (isNaN(id)) {
             return res.send("ID no valido");
         }
 
-        //obtener los datos de la quedada, la ruta vinculada y el nombre del creador
         const resultadoQuedada = await req.db.query(`
             SELECT q.*, r.nombre_ruta, u.nombre, ST_AsGeoJSON(geom) as geom_json
             FROM quedada q
@@ -85,7 +84,6 @@ async function detalleQuedada(req, res) {
             WHERE q.id_quedada = $1
         `, [id]);
 
-        //error por si el id de la quedada no esta
         if (resultadoQuedada.rows.length === 0) {
             return res.status(404).send("Quedada no encontrada");
         }
@@ -93,7 +91,6 @@ async function detalleQuedada(req, res) {
         const quedada = resultadoQuedada.rows[0];
         const emailUsuario = req.session.email || null;
 
-        // Comprobar si el usuario ya está apuntado
         let esApuntado = false;
         if (emailUsuario) {
             const resultadoParticipante = await req.db.query(
@@ -104,7 +101,7 @@ async function detalleQuedada(req, res) {
         }
 
         res.render('vistas/quedada/detalleQuedada', {
-            title: 'Quedada de ' + quedada.nombre_ruta + " | Descubre tu al rededor",
+            title: 'Quedada de ' + quedada.nombre_ruta + " | Descubre tu alrededor",
             bodyClass: 'detalleQuedada',
             mostrarNav: true,
             nombre: req.session.nombre,
@@ -135,8 +132,8 @@ async function quedadasOrganizadas(req, res) {
         const quedadas = result.rows;
 
         res.render('vistas/quedada/quedadasOrganizadas', {
-            title: 'Quedadas organizadas | Descubre tu al rededor',
-            bodyClass: 'verRutas',//se va a usar la misma body class para el estilo para evitar repeticion
+            title: 'Quedadas organizadas | Descubre tu alrededor',
+            bodyClass: 'verRutas',
             mostrarNav: true,
             nombre: req.session.nombre,
             quedadas: quedadas
@@ -166,7 +163,7 @@ async function quedadasApuntado(req, res) {
 
         const quedadasPar = result.rows;
         res.render('vistas/quedada/quedadasParticipado', {
-            title: 'Quedadas en las que has participado | Descubre tu al rededor',
+            title: 'Quedadas en las que has participado | Descubre tu alrededor',
             bodyClass: 'verRutas',
             mostrarNav: true,
             nombre: req.session.nombre,

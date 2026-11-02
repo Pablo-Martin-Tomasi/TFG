@@ -1,0 +1,15 @@
+<div class="anadirRuta d-flex justify-content-center align-items-center">
+    <div class="anadirRutaFormulario">
+        <h1>Reportar ruta</h1>
+        <form action="/reportarRuta/{{ruta.id_ruta}}" method="POST">
+            <label for="texto_reporte">Escribe tu reporte*</label>
+            <textarea type="text" id="texto_reporte" name="texto_reporte" placeholder="Escribe tu reporte sobre la ruta" rows="3"
+                required></textarea>
+
+            <div class="d-flex justify-content-center gap-5 mt-4">
+                <button type="submit">Enviar reporte</button>
+                <a href="/detalleRuta/{{ruta.id_ruta}}" class="btn btn-warning btn-volver px-4" role="button">Volver</a>
+            </div>
+        </form>
+    </div>
+</div>

@@ -2,9 +2,56 @@
     <a href="/anadirRuta" class="btn-anadirRuta">Organizar ruta</a>
 </div>
 <br>
+<div class="filter-container mx-auto" style="max-width: 900px;">
+    <div class="row g-3">
+        <div class="col-md-6">
+            <div class="card h-100 p-3 shadow-sm border-0 rounded-4">
+                <label for="filtroDificultad" class="form-label fw-bold text-success">
+                    <i class="bi bi-filter-circle me-2"></i>Filtrar rutas por dificultad
+                </label>
+                <select id="filtroDificultad" class="form-select rounded-pill" onchange="filtros()">
+                    <option value="">Todas las dificultades</option>
+                    <option value="Fácil">Fácil</option>
+                    <option value="Normal">Normal</option>
+                    <option value="Difícil">Difícil</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card h-100 p-3 shadow-sm border-0 rounded-4">
+                <label for="filtroTipoRuta" class="form-label fw-bold text-success">
+                    <i class="bi bi-filter-circle me-2"></i>Filtrar por tipo de ruta
+                </label>
+                <select id="filtroTipoRuta" class="form-select rounded-pill" onchange="filtros()">
+                    <option value="">Todos los tipos</option>
+                    <option value="circular">Circular</option>
+                    <option value="ida_vuelta">Ida y vuelta</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="card h-100 p-2 shadow-sm border-0 rounded-4">
+                <label class="form-label fw-bold text-success mb-2" style="font-size: 0.85rem;">
+                    <i class="bi bi-geo-alt-fill me-2"></i>Filtrar por dirección
+                </label>
+                <div class="d-flex flex-wrap gap-2 overflow-auto" style="max-height: 120px; padding: 8px; border: 1px solid #eee; border-radius: 10px;">
+                    {{#each direcciones}}
+                    <div class="form-check form-check-inline m-0">
+                        <input class="form-check-input filtro-direccion" type="checkbox" value="{{this}}" id="check-{{@index}}" onchange="filtros()">
+                        <label class="form-check-label" for="check-{{@index}}" style="font-size: 0.78rem;">
+                            {{this}}
+                        </label>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
 <div class="contenedor">
     {{#each routes}}
-    <div class="card custom-card">
+    <div class="card custom-card" data-dificultad="{{dificultad_ruta}}" data-tipo="{{tipo_ruta}}" data-direccion="{{direccion}}">
         <div class="card-img-container">
             <div id="map-{{id_ruta}}" class="map-card"></div>
         </div>
@@ -19,7 +66,12 @@
 
             <div class="card-sub-info">
                 <p class="card-text">{{descripcion_corta}}</p>
-                <span class="km-info">{{km}} km</span>
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="km-info">{{km}} km</span>
+                    <span class="address-info">
+                        <i class="bi bi-geo-alt-fill text-success"></i> {{direccion}}
+                    </span>
+                </div>
             </div>
         </div>
 
@@ -85,4 +137,31 @@
         {{/each}}
 
     });
+
+    function filtros() {
+        const dificultadSeleccionada = document.getElementById('filtroDificultad').value.toLowerCase();
+        const tipoSeleccionado = document.getElementById('filtroTipoRuta').value.toLowerCase();
+        
+        const checkboxes = document.querySelectorAll('.filtro-direccion:checked');
+        const direccionesSeleccionadas = Array.from(checkboxes).map(cb => cb.value.toLowerCase());
+
+        const cards = document.querySelectorAll('.custom-card');
+
+        cards.forEach(card => {
+            const dificultad = card.getAttribute('data-dificultad').toLowerCase();
+            const tipo = card.getAttribute('data-tipo').toLowerCase();
+            const direccion = card.getAttribute('data-direccion').toLowerCase();
+
+            const coincideDificultad = (dificultadSeleccionada === "" || dificultad === dificultadSeleccionada);
+            const coincideTipo = (tipoSeleccionado === "" || tipo === tipoSeleccionado);
+            
+            const coincideDireccion = (direccionesSeleccionadas.length === 0 || direccionesSeleccionadas.includes(direccion));
+
+            if (coincideDificultad && coincideTipo && coincideDireccion) {
+                card.style.display = "flex";
+            } else {
+                card.style.display = "none";
+            }
+        });
+    } 
 </script>

@@ -11,7 +11,7 @@
 }
 
 .detalle-ruta-body {
-    background-color: var(--light-bg);
+    background-color: #FFFAF1;
     color: var(--text-dark);
 }
 
@@ -113,24 +113,56 @@
 
 /* Botón flotante Propietario */
 .btn-owner {
-    background: var(--accent-green);
+    background: linear-gradient(135deg, var(--accent-green) 0%, var(--primary-green) 100%);
     color: white;
     border-radius: 50px;
-    padding: 12px 25px;
-    font-weight: 600;
+    padding: 12px 28px;
+    font-weight: 700;
     border: none;
-    box-shadow: 0 4px 15px rgba(145, 181, 125, 0.4);
-    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(145, 181, 125, 0.3);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     display: inline-flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
+    font-family: 'Outfit', sans-serif;
+    letter-spacing: 0.5px;
+    text-decoration: none;
 }
 
 .btn-owner:hover {
-    background: var(--primary-green);
+    background: linear-gradient(135deg, var(--primary-green) 0%, var(--accent-green) 100%);
     color: white;
-    transform: scale(1.05);
-    box-shadow: 0 6px 20px rgba(145, 181, 125, 0.6);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(145, 181, 125, 0.5);
+}
+
+/* Botón Editar Ruta */
+.btn-edit-route {
+    background: linear-gradient(135deg, #3a7bd5 0%, #00d2ff 100%);
+    color: white;
+    border-radius: 50px;
+    padding: 12px 28px;
+    font-weight: 700;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0, 210, 255, 0.3);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    font-family: 'Outfit', sans-serif;
+    letter-spacing: 0.5px;
+}
+
+.btn-edit-route:hover {
+    background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%);
+    color: white;
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(0, 210, 255, 0.5);
+}
+
+.btn-edit-route i {
+    font-size: 1.1rem;
 }
 
 /* Caja de Comentarios */
@@ -240,4 +272,26 @@
 .comment-image-container img:hover {
     transform: scale(1.02);
     cursor: pointer;
+}
+
+/* Sidebar Actions Labels */
+.action-item {
+    padding: 8px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    margin: -8px; /* Offset padding for alignment */
+}
+
+.action-item:hover {
+    background-color: rgba(145, 181, 125, 0.08);
+}
+
+.action-text span {
+    font-size: 0.95rem;
+    color: var(--text-dark);
+}
+
+.action-text small {
+    font-size: 0.75rem;
+    color: var(--text-muted);
 }

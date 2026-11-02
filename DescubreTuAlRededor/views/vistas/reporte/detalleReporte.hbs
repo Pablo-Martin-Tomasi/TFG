@@ -1,0 +1,97 @@
+<div class="container py-5">
+    <!-- Header de la Ruta Reportada -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div
+                class="d-flex align-items-center justify-content-between bg-white p-4 rounded-4 shadow-sm border-start border-warning border-5">
+                <div class="d-flex align-items-center gap-3 flex-wrap">
+                    <h1 class="display-6 fw-bold mb-0">
+                        <i class="bi bi-flag-fill text-warning me-2"></i> Reportes: {{ruta.nombre_ruta}}
+                    </h1>
+                    <a href="/detalleRuta/{{ruta.id_ruta}}" class="btn btn-outline-success btn-sm rounded-pill px-3 shadow-sm">
+                        <i class="bi bi-eye me-1"></i> Ver ruta
+                    </a>
+                </div>
+                <div class="text-end">
+                    <span class="badge rounded-pill bg-danger px-3 py-2">
+                        {{reportes.length}} Incidencias reportadas
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Lista de Reportes -->
+    <div class="row">
+        <div class="col-lg-10 mx-auto">
+            <div class="report-list">
+                {{#each reportes}}
+                <div class="card border-0 shadow-sm rounded-4 mb-4 overflow-hidden">
+                    <div
+                        class="card-header bg-light border-0 py-3 px-4 d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
+                            {{#if foto_perfil}}
+                            <div class="me-3"
+                                style="width: 48px; height: 48px; border-radius: 50%; overflow: hidden; border: 2px solid #ffc107;">
+                                <img src="{{foto_perfil}}" alt="Avatar"
+                                    style="width: 100%; height: 100%; object-fit: cover;">
+                            </div>
+                            {{else}}
+                            <div class="bg-warning bg-opacity-10 text-warning rounded-circle p-2 me-3">
+                                <i class="bi bi-person-exclamation fs-5"></i>
+                            </div>
+                            {{/if}}
+                            <div>
+                                <h6 class="mb-0 fw-bold">{{nombre}}</h6>
+                                <small class="text-muted">{{formatDate fecha}}</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="bg-light p-3 rounded-3 border-start border-warning border-3">
+                            <p class="mb-0 text-dark" style="line-height: 1.6; font-size: 1.05rem;">
+                                {{texto_reporte}}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white border-top-0 px-4 py-3 text-end">
+                    </div>
+                </div>
+                {{else}}
+                <div class="text-center py-5 bg-white rounded-4 shadow-sm">
+                    <div class="mb-4">
+                        <i class="bi bi-check-circle-fill text-success" style="font-size: 4rem;"></i>
+                    </div>
+                    <h3>No hay reportes activos</h3>
+                    <p class="text-muted">Esta ruta no tiene incidencias pendientes de revisión.</p>
+                    <a href="/verRutasConReportes" class="btn btn-success rounded-pill px-4 mt-3">Volver a la lista</a>
+                </div>
+                {{/each}}
+            </div>
+
+            <!-- Botón Volver -->
+            <div class="mt-4 text-center">
+                <a href="/verRutasConReportes" class="btn btn-link text-muted text-decoration-none">
+                    <i class="bi bi-arrow-left me-2"></i> Volver
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .report-list .card {
+        transition: transform 0.2s ease;
+    }
+
+    .report-list .card:hover {
+        transform: translateY(-5px);
+    }
+
+    .breadcrumb-item+.breadcrumb-item::before {
+        content: "›";
+        font-size: 1.2rem;
+        line-height: 1;
+    }
+</style>

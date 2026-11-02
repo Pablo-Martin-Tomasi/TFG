@@ -37,8 +37,14 @@ const comentarioRoutes = require('./routes/comentario');
 //ruta para la vista GPS
 const gpsRoutes = require('./routes/rutasGPS');
 
+//ruta para la vista de los reportes
+const reporteRoutes = require('./routes/reporte');
+
+//ruta para que el usuario con rol de admin pueda editar cualquier ruta y eliminarla
+const editarRutaAdminRoutes = require('./routes/editarRutaAdmin');
+
 //ruta para la authenticiacion
-const authMiddleware = require('./middleware/auth');
+const { authMiddleware } = require('./middleware/auth');
 const { title } = require('process');
 
 
@@ -46,12 +52,6 @@ const app = express();
 
 //para el css
 app.use(express.static(path.join(__dirname, '../public')));
-
-// Middlewares
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-
-
 
 // Puerto
 app.set('port', 4000);
@@ -96,8 +96,20 @@ app.use((req, res, next) => {
 app.use(session({
     secret: 'secret',
     resave: true,
-    saveUninitialized: true
+    saveUninitialized: true,
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 2
+    }
 }));
+
+// Middleware para pasar datos de sesión a todas las vistas
+app.use((req, res, next) => {
+    if (req.session.loggendin) {
+        res.locals.nombre = req.session.nombre;
+        res.locals.esAdmin = (req.session.rol === 'Admin');
+    }
+    next();
+});
 
 // Middlewares
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -120,6 +132,8 @@ app.use('/', favRoutes);
 app.use('/', historialRoutes);
 app.use('/', comentarioRoutes);
 app.use('/', gpsRoutes);
+app.use('/', reporteRoutes);
+app.use('/', editarRutaAdminRoutes);
 
 
 //ruta para el perfil del usuario

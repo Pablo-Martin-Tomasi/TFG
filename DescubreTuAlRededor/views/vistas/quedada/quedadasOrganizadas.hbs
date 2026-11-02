@@ -4,39 +4,41 @@
             <i class="bi bi-arrow-left-circle-fill"></i> Volver
         </a>
     </div>
-    <div class="row">
-        <div class="col-12">
-            <h1 class="mb-4 text-center">Quedadas organizadas</h1>
-            <div class="table-responsive">
-                <table class="table table-striped table-hover mt-3">
-                    <thead class="table-dark">
-                        <tr>
-                            <th scope="col">Nombre de la Ruta</th>
-                            <th scope="col">Dia</th>
-                            <th scope="col">Direcion</th>
-                            <th scope="col">Detalle</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {{#each quedadas}}
-                        <tr>
-                            <td class="align-middle fw-bold">{{nombre_ruta}}</td>
-                            <td class="align-middle">{{formatDate dia}}</td>
-                            <td class="align-middle">{{direcion}}</td>
-                            <td class="align-middle">
-                                <a href="/detalleQuedada/{{id_quedada}}" class="btn btn-outline-primary btn-sm">Detalle de la quedada</a>
-                            </td>
-                        </tr>
-                        {{else}}
-                        <tr>
-                            <td colspan="5" class="text-center py-4 text-muted small">
-                                No hay quedadas disponibles por el momento.
-                            </td>
-                        </tr>
-                        {{/each}}
-                    </tbody>
-                </table>
+
+    <div class="contenedor-quedadas">
+        {{#each quedadas}}
+        <div class="quedada-card">
+            <div class="quedada-body">
+                <div class="quedada-date-badge">
+                    <i class="bi bi-calendar-event"></i>
+                    {{formatDate dia}}
+                </div>
+
+                <h5 class="quedada-title">{{nombre_ruta}}</h5>
+
+                <div class="quedada-info-item">
+                    <i class="bi bi-geo-alt"></i>
+                    <span>Dirección: <strong>{{direcion}}</strong></span>
+                </div>
+            </div>
+
+            <div class="quedada-footer">
+                <a href="/detalleQuedada/{{id_quedada}}" class="btn-quedada-detail">
+                    Ver detalles <i class="bi bi-arrow-right ms-1"></i>
+                </a>
             </div>
         </div>
+        {{else}}
+        <div class="quedada-empty">
+            <div class="empty-icon-container">
+                <i class="bi bi-calendar-x"></i>
+            </div>
+            <h3>No as organizado ninguna quedada</h3>
+            <p>Organiza una quedada para la gente</p>
+            <a href="/verRutas" class="btn-quedada-detail mt-4 d-inline-block">
+                <i class="bi bi-search me-2"></i> Explora las rutas disponibles para las quedadas
+            </a>
+        </div>
+        {{/each}}
     </div>
 </div>

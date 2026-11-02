@@ -38,7 +38,7 @@ async function historialDeRutas(req, res) {
         }
 
         const historial = await req.db.query(`
-            SELECT r.id_ruta, r.nombre_ruta, r.dificultad_ruta, r.km, r.descripcion, ST_AsGeoJSON(geom) as geom_json FROM historial_rutas hr
+            SELECT r.id_ruta, r.nombre_ruta, r.dificultad_ruta, r.km, r.descripcion, r.direccion, ST_AsGeoJSON(geom) as geom_json FROM historial_rutas hr
             JOIN ruta r
             ON hr.id_ruta = r.id_ruta
             WHERE hr.email = $1`,
@@ -55,7 +55,6 @@ async function historialDeRutas(req, res) {
 
         historialRutas.forEach(route => {
             route.es_favorita = rutasFavIds.includes(route.id_ruta);
-            // Generar descripción corta
             if (route.descripcion) {
                 route.descripcion_corta = route.descripcion.length > 50 
                     ? route.descripcion.substring(0, 50) + '...' 
@@ -65,9 +64,8 @@ async function historialDeRutas(req, res) {
             }
         });
 
-        //renderizar la vista para que se pueda 
         res.render('vistas/rutas/historialRutas', {
-            title: 'Historial rutas | Descubre tu al rededor',
+            title: 'Historial rutas | Descubre tu alrededor',
             bodyClass: 'verRutasHechas',
             mostrarNav: true,
             nombre: req.session.nombre,
